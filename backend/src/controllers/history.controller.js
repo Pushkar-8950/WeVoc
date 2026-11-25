@@ -71,7 +71,6 @@ const getHistory = asyncHandler(async (req, res) => {
             $project:{
                 title:1,
                 description:1,
-                thumbnail:1,
                 duration:1,
                 views:1,
                 owner:1,

@@ -6,6 +6,7 @@ import {
     HeartIcon,
     ReplyIcon,
     UsersIcon,
+    WarningIcon,
 } from "../components/Icons";
 
 import {
@@ -94,9 +95,6 @@ export default function NotificationsPage() {
         useState("");
 
 
-    // =========================
-    // LOAD NOTIFICATIONS
-    // =========================
 
     const loadNotifications = async () => {
 
@@ -140,9 +138,6 @@ export default function NotificationsPage() {
     }, []);
 
 
-    // =========================
-    // MARK SINGLE AS READ
-    // =========================
 
     const handleMarkAsRead = async (
         notification
@@ -185,9 +180,6 @@ export default function NotificationsPage() {
     };
 
 
-    // =========================
-    // MARK ALL AS READ
-    // =========================
 
     const handleMarkAll = async () => {
 
@@ -223,9 +215,6 @@ export default function NotificationsPage() {
     };
 
 
-    // =========================
-    // DELETE
-    // =========================
 
     const handleDelete = async (
         e,
@@ -284,30 +273,20 @@ export default function NotificationsPage() {
         <div>
 
 
-            {/* =========================
-                HEADER
-            ========================= */}
 
-            <div
-                style={{
-                    marginBottom: 16,
-                }}
-            >
 
-                <h1
-                    style={{
-                        margin: 0,
-                    }}
-                >
-                    Notifications
-                </h1>
-
+            <div className="feed-header">
+                <div className="feed-header-inner page-title-header">
+                    <div className="page-title-stack">
+                        <h1 className="page-top-title notif-page-title">
+                            Notifications
+                        </h1>
+                    </div>
+                </div>
             </div>
 
 
-            {/* =========================
-                TABS
-            ========================= */}
+
 
             <div className="tab-strip">
 
@@ -353,9 +332,7 @@ export default function NotificationsPage() {
             </div>
 
 
-            {/* =========================
-                TOOLBAR
-            ========================= */}
+
 
             <div className="notif-toolbar">
 
@@ -389,9 +366,7 @@ export default function NotificationsPage() {
             </div>
 
 
-            {/* =========================
-                LOADING
-            ========================= */}
+
 
             {loading && (
 
@@ -416,9 +391,7 @@ export default function NotificationsPage() {
             )}
 
 
-            {/* =========================
-                ERROR
-            ========================= */}
+
 
             {!loading &&
                 error && (
@@ -428,8 +401,7 @@ export default function NotificationsPage() {
                     >
 
                         <div className="empty-ico">
-
-                            ⚠️
+                            <WarningIcon />
 
                         </div>
 
@@ -463,9 +435,7 @@ export default function NotificationsPage() {
                 )}
 
 
-            {/* =========================
-                EMPTY
-            ========================= */}
+
 
             {!loading &&
                 !error &&
@@ -502,9 +472,7 @@ export default function NotificationsPage() {
                 )}
 
 
-            {/* =========================
-                NOTIFICATIONS
-            ========================= */}
+
 
             {!loading &&
                 !error &&
@@ -540,7 +508,7 @@ export default function NotificationsPage() {
                                         }
                                     >
 
-                                        {/* Unread dot */}
+
 
                                         <div
                                             className={`notif-dot${
@@ -551,7 +519,7 @@ export default function NotificationsPage() {
                                         />
 
 
-                                        {/* Icon */}
+
 
                                         <div className="notif-icon">
 
@@ -560,7 +528,7 @@ export default function NotificationsPage() {
                                         </div>
 
 
-                                        {/* Content */}
+
 
                                         <div
                                             className="notif-content"
@@ -592,7 +560,7 @@ export default function NotificationsPage() {
                                         </div>
 
 
-                                        {/* Delete */}
+
 
                                         <button
                                             type="button"

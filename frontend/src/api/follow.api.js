@@ -8,7 +8,6 @@ export const toggleFollow = async (userId) => {
 };
 
 
-// Get user's followers
 export const getFollowers = async (userId) => {
     return apiClient(`/follows/${userId}/followers`, {
         method: "GET",

@@ -20,9 +20,6 @@ import feedRouter from "./routes/feed.routes.js";
 
 const app = express();
 
-// =====================================================
-// CORS CONFIGURATION
-// =====================================================
 const allowedOrigins = [
     process.env.CORS_ORIGIN,
     "http://localhost:5173",
@@ -43,17 +40,11 @@ app.use(
     })
 );
 
-// =====================================================
-// BODY PARSER & COOKIE MIDDLEWARE
-// =====================================================
 app.use(express.json({ limit: "20kb" }));
 app.use(express.urlencoded({ extended: true, limit: "20kb" }));
 app.use(express.static("public"));
 app.use(cookieParser());
 
-// =====================================================
-// HEALTH CHECK
-// =====================================================
 app.get("/api/v1/health", (req, res) => {
     res.status(200).json({
         status: "ok",
@@ -62,9 +53,6 @@ app.get("/api/v1/health", (req, res) => {
     });
 });
 
-// =====================================================
-// API ROUTES
-// =====================================================
 app.use("/api/v1/voices", voiceRouter);
 app.use("/api/v1/comments", commentRouter);
 app.use("/api/v1/follows", followRouter);
@@ -81,9 +69,6 @@ app.use("/api/v1/admin", adminRouter);
 app.use("/api/v1/communities", communityRouter);
 app.use("/api/v1/feed", feedRouter);
 
-// =====================================================
-// ERROR HANDLING MIDDLEWARE
-// =====================================================
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
     const message = err.message || "Internal Server Error";

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import Avatar from "../components/Avatar";
+import { PlusIcon, UsersIcon } from "../components/Icons";
 
 import { useApp } from "../context/AppContext";
 
@@ -19,9 +20,6 @@ export default function FriendsPage() {
     } = useApp();
 
 
-    // =========================
-    // STATES
-    // =========================
 
     const [tab, setTab] =
         useState("followers");
@@ -47,9 +45,6 @@ export default function FriendsPage() {
         useState("");
 
 
-    // =========================
-    // FETCH FOLLOWERS
-    // =========================
 
     const fetchFollowers = async () => {
 
@@ -90,9 +85,6 @@ export default function FriendsPage() {
     };
 
 
-    // =========================
-    // FETCH FOLLOWING
-    // =========================
 
     const fetchFollowing = async () => {
 
@@ -133,9 +125,6 @@ export default function FriendsPage() {
     };
 
 
-    // =========================
-    // INITIAL LOAD
-    // =========================
 
     useEffect(() => {
 
@@ -168,9 +157,6 @@ export default function FriendsPage() {
     }, [user?._id]);
 
 
-    // =========================
-    // UNFOLLOW
-    // =========================
 
     const handleUnfollow = async (
         userId
@@ -231,9 +217,6 @@ export default function FriendsPage() {
     };
 
 
-    // =========================
-    // LOADING
-    // =========================
 
     if (loading) {
 
@@ -254,9 +237,6 @@ export default function FriendsPage() {
     }
 
 
-    // =========================
-    // CURRENT LIST
-    // =========================
 
     const currentList =
         tab === "followers"
@@ -269,47 +249,29 @@ export default function FriendsPage() {
         <div className="friends-page">
 
 
-            {/* =========================
-                HEADER
-            ========================= */}
-
-            <div
-                style={{
-                    paddingBottom: 8,
-                }}
-            >
-
-                <h2
-                    style={{
-                        margin: 0,
-                    }}
-                >
-
-                    Connections
-
-                </h2>
 
 
-                <div
-                    style={{
-                        fontSize: 13,
-                        color:
-                            "var(--ink3)",
-                        marginTop: 4,
-                    }}
-                >
+            <div className="page-title-header" style={{ marginBottom: 8 }}>
 
-                    People you follow
-                    and people following you
+                <div className="page-title-stack">
+                    <h2 className="page-top-title friends-page-title">
 
+                        Connections
+
+                    </h2>
+
+
+                    <div className="page-top-subtitle">
+
+                        (People you follow and people following you)
+
+                    </div>
                 </div>
 
             </div>
 
 
-            {/* =========================
-                ERROR
-            ========================= */}
+
 
             {error && (
 
@@ -322,9 +284,7 @@ export default function FriendsPage() {
             )}
 
 
-            {/* =========================
-                TABS
-            ========================= */}
+
 
             <div className="tab-strip">
 
@@ -387,9 +347,7 @@ export default function FriendsPage() {
             </div>
 
 
-            {/* =========================
-                EMPTY
-            ========================= */}
+
 
             {currentList.length === 0 && (
 
@@ -398,8 +356,8 @@ export default function FriendsPage() {
                     <div className="empty-ico">
 
                         {tab === "followers"
-                            ? "👥"
-                            : "➕"
+                            ? <UsersIcon />
+                            : <PlusIcon />
                         }
 
                     </div>
@@ -429,9 +387,7 @@ export default function FriendsPage() {
             )}
 
 
-            {/* =========================
-                LIST
-            ========================= */}
+
 
             {currentList.map(
                 (item) => {
@@ -477,9 +433,7 @@ export default function FriendsPage() {
                         >
 
 
-                            {/* =================
-                                AVATAR
-                            ================= */}
+
 
                             <Avatar
                                 name={
@@ -498,9 +452,7 @@ export default function FriendsPage() {
                             />
 
 
-                            {/* =================
-                                INFO
-                            ================= */}
+
 
                             <div
                                 className="friend-info"
@@ -537,9 +489,7 @@ export default function FriendsPage() {
                             </div>
 
 
-                            {/* =================
-                                ACTION
-                            ================= */}
+
 
                             {tab ===
                                 "following" && (

@@ -17,38 +17,18 @@ import { upload } from "../middleware/multer.middleware.js";
 const router = Router();
 
 
-// ========================================
-// ALL VOICE ROUTES REQUIRE LOGIN
-// ========================================
 
 router.use(verifyJWT);
 
 
-// ========================================
-// PUBLISH VOICE
-// ========================================
 
 router.post(
     "/publish",
-
-    upload.fields([
-        {
-            name: "voiceFile",
-            maxCount: 1
-        },
-        {
-            name: "thumbnail",
-            maxCount: 1
-        }
-    ]),
-
+    upload.single("voiceFile"),
     publishVoice
 );
 
 
-// ========================================
-// ALL VOICES
-// ========================================
 
 router.get(
     "/",
@@ -56,10 +36,7 @@ router.get(
 );
 
 
-// ========================================
-// COMMUNITY VOICES
 // IMPORTANT: this must come BEFORE /:voiceId
-// ========================================
 
 router.get(
     "/community/:communityId",
@@ -67,9 +44,6 @@ router.get(
 );
 
 
-// ========================================
-// SINGLE VOICE
-// ========================================
 
 router.get(
     "/:voiceId",
@@ -77,22 +51,13 @@ router.get(
 );
 
 
-// ========================================
-// UPDATE VOICE
-// ========================================
 
 router.patch(
     "/:voiceId",
-
-    upload.single("thumbnail"),
-
     updateVoice
 );
 
 
-// ========================================
-// DELETE VOICE
-// ========================================
 
 router.delete(
     "/:voiceId",

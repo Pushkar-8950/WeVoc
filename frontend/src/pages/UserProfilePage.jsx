@@ -13,11 +13,15 @@ import {
 import { getAllVoices } from "../api/voice.api";
 
 import { fmtDate } from "../utils/helpers";
+import {
+    CalendarIcon,
+    MessageIcon,
+    MicIcon,
+    ProfileIcon,
+    WarningIcon,
+} from "../components/Icons";
 
 
-// =====================================================
-// USER PROFILE PAGE
-// =====================================================
 
 export default function UserProfilePage() {
 
@@ -28,9 +32,6 @@ export default function UserProfilePage() {
     } = useApp();
 
 
-    // =====================================================
-    // PROFILE STATE
-    // =====================================================
 
     const [user, setUser] =
         useState(selectedUser || null);
@@ -45,9 +46,6 @@ export default function UserProfilePage() {
         useState("");
 
 
-    // =====================================================
-    // POSTS
-    // =====================================================
 
     const [posts, setPosts] =
         useState([]);
@@ -56,17 +54,11 @@ export default function UserProfilePage() {
         useState(false);
 
 
-    // =====================================================
-    // TAB
-    // =====================================================
 
     const [tab, setTab] =
         useState("posts");
 
 
-    // =====================================================
-    // LOAD PROFILE
-    // =====================================================
 
     const loadProfile = async () => {
 
@@ -113,9 +105,6 @@ export default function UserProfilePage() {
     };
 
 
-    // =====================================================
-    // LOAD USER POSTS
-    // =====================================================
 
     const loadPosts = async () => {
 
@@ -173,9 +162,6 @@ export default function UserProfilePage() {
     };
 
 
-    // =====================================================
-    // INITIAL LOAD
-    // =====================================================
 
     useEffect(() => {
 
@@ -185,9 +171,6 @@ export default function UserProfilePage() {
     }, [selectedUser?._id]);
 
 
-    // =====================================================
-    // FOLLOW / UNFOLLOW
-    // =====================================================
 
     const handleFollow = async () => {
 
@@ -270,9 +253,6 @@ export default function UserProfilePage() {
     };
 
 
-    // =====================================================
-    // MESSAGE
-    // =====================================================
 
     const handleMessage = () => {
 
@@ -296,9 +276,6 @@ export default function UserProfilePage() {
     };
 
 
-    // =====================================================
-    // NO USER
-    // =====================================================
 
     if (!selectedUser) {
 
@@ -307,7 +284,7 @@ export default function UserProfilePage() {
             <div className="empty-state">
 
                 <div className="empty-ico">
-                    👤
+                    <ProfileIcon />
                 </div>
 
                 <div className="empty-title">
@@ -321,9 +298,6 @@ export default function UserProfilePage() {
     }
 
 
-    // =====================================================
-    // LOADING
-    // =====================================================
 
     if (loading && !user) {
 
@@ -332,7 +306,7 @@ export default function UserProfilePage() {
             <div className="empty-state">
 
                 <div className="empty-ico">
-                    👤
+                    <ProfileIcon />
                 </div>
 
                 <div className="empty-title">
@@ -346,9 +320,6 @@ export default function UserProfilePage() {
     }
 
 
-    // =====================================================
-    // ERROR
-    // =====================================================
 
     if (error && !user) {
 
@@ -357,7 +328,7 @@ export default function UserProfilePage() {
             <div className="empty-state">
 
                 <div className="empty-ico">
-                    ⚠️
+                    <WarningIcon />
                 </div>
 
                 <div className="empty-title">
@@ -385,17 +356,12 @@ export default function UserProfilePage() {
     }
 
 
-    // =====================================================
-    // RENDER
-    // =====================================================
 
     return (
 
         <div className="page-anim">
 
-            {/* =================================================
-                HEADER
-            ================================================= */}
+
 
             <div
                 style={{
@@ -439,13 +405,11 @@ export default function UserProfilePage() {
             </div>
 
 
-            {/* =================================================
-                PROFILE
-            ================================================= */}
+
 
             <div className="profile-info-wrap">
 
-                {/* Avatar */}
+
 
                 <div className="profile-avatar-bump">
 
@@ -462,7 +426,7 @@ export default function UserProfilePage() {
                 </div>
 
 
-                {/* Name + Actions */}
+
 
                 <div
                     className="profile-title-row"
@@ -481,7 +445,7 @@ export default function UserProfilePage() {
                     </div>
 
 
-                    {/* ACTION BUTTONS */}
+
 
                     <div
                         style={{
@@ -492,18 +456,18 @@ export default function UserProfilePage() {
                         }}
                     >
 
-                        {/* MESSAGE */}
+
 
                         <button
                             type="button"
                             className="btn btn-outline btn-sm"
                             onClick={handleMessage}
                         >
-                            💬 Message
+                            <MessageIcon /> Message
                         </button>
 
 
-                        {/* FOLLOW */}
+
 
                         <button
                             type="button"
@@ -530,7 +494,7 @@ export default function UserProfilePage() {
                 </div>
 
 
-                {/* Bio */}
+
 
                 {user.bio && (
 
@@ -541,7 +505,7 @@ export default function UserProfilePage() {
                 )}
 
 
-                {/* Meta */}
+
 
                 <div
                     className="profile-meta-row"
@@ -549,7 +513,7 @@ export default function UserProfilePage() {
 
                     <div className="profile-meta-item">
 
-                        📅 Joined{" "}
+                        <CalendarIcon /> Joined{" "}
 
                         {user.createdAt
                             ? fmtDate(
@@ -563,7 +527,7 @@ export default function UserProfilePage() {
                 </div>
 
 
-                {/* Stats */}
+
 
                 <div
                     className="profile-stats-row"
@@ -612,9 +576,7 @@ export default function UserProfilePage() {
             </div>
 
 
-            {/* =================================================
-                TABS
-            ================================================= */}
+
 
             <div className="tab-strip">
 
@@ -654,9 +616,7 @@ export default function UserProfilePage() {
             </div>
 
 
-            {/* =================================================
-                POSTS
-            ================================================= */}
+
 
             {tab === "posts" && (
 
@@ -667,7 +627,7 @@ export default function UserProfilePage() {
                         <div className="empty-state">
 
                             <div className="empty-ico">
-                                🎙
+                                <MicIcon />
                             </div>
 
                             <div className="empty-title">
@@ -681,7 +641,7 @@ export default function UserProfilePage() {
                         <div className="empty-state">
 
                             <div className="empty-ico">
-                                🎙
+                                <MicIcon />
                             </div>
 
                             <div className="empty-title">
@@ -719,16 +679,14 @@ export default function UserProfilePage() {
             )}
 
 
-            {/* =================================================
-                ABOUT
-            ================================================= */}
+
 
             {tab === "about" && (
 
                 <div className="empty-state">
 
                     <div className="empty-ico">
-                        👤
+                        <ProfileIcon />
                     </div>
 
                     <div className="empty-title">

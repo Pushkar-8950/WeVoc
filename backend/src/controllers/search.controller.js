@@ -178,7 +178,6 @@ const searchVoices = asyncHandler(async (req, res) => {
 
                 description: 1,
 
-                thumbnail: 1,
 
                 voiceFile: 1,
 

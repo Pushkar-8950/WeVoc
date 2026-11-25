@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useApp } from "../context/AppContext";
+import { EyeIcon, EyeOffIcon } from "../components/Icons";
 
 export default function RegisterPage({ onLogin }) {
 
@@ -29,7 +30,6 @@ export default function RegisterPage({ onLogin }) {
         setSuccess("");
 
 
-        // Required text fields
         if (
             !fullname.trim() ||
             !email.trim() ||
@@ -63,7 +63,6 @@ export default function RegisterPage({ onLogin }) {
                 "Account created successfully!"
             );
 
-            // Clear form
             setFullname("");
             setEmail("");
             setUsername("");
@@ -96,7 +95,7 @@ export default function RegisterPage({ onLogin }) {
             <div className="auth-card">
 
 
-                {/* Header */}
+
 
                 <div className="auth-header">
 
@@ -114,7 +113,7 @@ export default function RegisterPage({ onLogin }) {
                 <form onSubmit={handleSubmit}>
 
 
-                    {/* Error */}
+
 
                     {error && (
 
@@ -125,7 +124,7 @@ export default function RegisterPage({ onLogin }) {
                     )}
 
 
-                    {/* Success */}
+
 
                     {success && (
 
@@ -136,7 +135,7 @@ export default function RegisterPage({ onLogin }) {
                     )}
 
 
-                    {/* Full name */}
+
 
                     <div className="form-group">
 
@@ -159,7 +158,7 @@ export default function RegisterPage({ onLogin }) {
                     </div>
 
 
-                    {/* Email */}
+
 
                     <div className="form-group">
 
@@ -182,7 +181,7 @@ export default function RegisterPage({ onLogin }) {
                     </div>
 
 
-                    {/* Username */}
+
 
                     <div className="form-group">
 
@@ -205,7 +204,7 @@ export default function RegisterPage({ onLogin }) {
                     </div>
 
 
-                    {/* Password */}
+
 
                     <div className="form-group">
 
@@ -274,8 +273,8 @@ export default function RegisterPage({ onLogin }) {
                             >
 
                                 {showPassword
-                                    ? "🙈"
-                                    : "👁️"}
+                                    ? <EyeOffIcon />
+                                    : <EyeIcon />}
 
                             </button>
 
@@ -284,7 +283,7 @@ export default function RegisterPage({ onLogin }) {
                     </div>
 
 
-                    {/* Avatar */}
+
 
                     <div className="form-group">
 
@@ -317,7 +316,7 @@ export default function RegisterPage({ onLogin }) {
                     </div>
 
 
-                    {/* Cover image */}
+
 
                     <div className="form-group">
 
@@ -350,7 +349,7 @@ export default function RegisterPage({ onLogin }) {
                     </div>
 
 
-                    {/* Create account */}
+
 
                     <button
                         type="submit"
@@ -367,7 +366,7 @@ export default function RegisterPage({ onLogin }) {
                 </form>
 
 
-                {/* Login */}
+
 
                 <div className="auth-footer">
 

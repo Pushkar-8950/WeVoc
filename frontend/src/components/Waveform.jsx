@@ -14,25 +14,18 @@ export function Waveform({ playing = false, bars = 30 }) {
         );
     }, [bars]);
 
-    const litBars = Math.floor(bars * 0.35);
-
     return (
         <div
-            className="waveform-wrap"
+            className={`waveform-wrap${playing ? " playing" : ""}`}
             aria-label={playing ? "Audio playing" : "Audio waveform"}
         >
-            {heights.map((height, index) => {
-                const isLit =
-                    playing && index < litBars;
-
-                return (
+            {heights.map((height, index) => (
                     <div
                         key={index}
                         className="wv-bar"
                         style={{
                             width: 3,
                             height,
-                            opacity: isLit ? 1 : 0.25,
 
                             animation: playing
                                 ? `lv-anim ${
@@ -44,8 +37,7 @@ export function Waveform({ playing = false, bars = 30 }) {
                                 : "none",
                         }}
                     />
-                );
-            })}
+            ))}
         </div>
     );
 }

@@ -1,14 +1,10 @@
 import apiClient from "./apiClient";
 
-// ========================================
-// PUBLISH VOICE
-// ========================================
 
 export const publishVoice = async ({
     title,
     description,
     voiceFile,
-    thumbnail,
     isAnonymous = false,
     communityId = null,
 }) => {
@@ -18,7 +14,6 @@ export const publishVoice = async ({
     formData.append("title", title);
     formData.append("description", description);
     formData.append("voiceFile", voiceFile);
-    formData.append("thumbnail", thumbnail);
     formData.append(
         "isAnonymous",
         String(isAnonymous)
@@ -41,9 +36,6 @@ export const publishVoice = async ({
 };
 
 
-// ========================================
-// GET ALL VOICES
-// ========================================
 
 export const getAllVoices = async (
     page = 1,
@@ -59,13 +51,9 @@ export const getAllVoices = async (
 };
 
 
-// Backward compatibility
 export const getVoices = getAllVoices;
 
 
-// ========================================
-// GET COMMUNITY VOICES
-// ========================================
 
 export const getCommunityVoices = async (
     communityId
@@ -80,9 +68,6 @@ export const getCommunityVoices = async (
 };
 
 
-// ========================================
-// GET SINGLE VOICE
-// ========================================
 
 export const getVoiceById = async (
     voiceId
@@ -97,53 +82,33 @@ export const getVoiceById = async (
 };
 
 
-// ========================================
-// UPDATE VOICE
-// ========================================
 
 export const updateVoice = async ({
     voiceId,
     title,
     description,
-    thumbnail,
 }) => {
 
-    const formData = new FormData();
+    const body = {};
 
     if (title !== undefined) {
-        formData.append(
-            "title",
-            title
-        );
+        body.title = title;
     }
 
     if (description !== undefined) {
-        formData.append(
-            "description",
-            description
-        );
-    }
-
-    if (thumbnail) {
-        formData.append(
-            "thumbnail",
-            thumbnail
-        );
+        body.description = description;
     }
 
     return apiClient(
         `/voices/${voiceId}`,
         {
             method: "PATCH",
-            body: formData,
+            body: JSON.stringify(body),
         }
     );
 };
 
 
-// ========================================
-// DELETE VOICE
-// ========================================
 
 export const deleteVoice = async (
     voiceId

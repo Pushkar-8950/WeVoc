@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import PostCard from "../components/PostCard";
 import { getBookmarkedVoices } from "../api/bookmark.api";
+import { BookmarkIcon, WarningIcon } from "../components/Icons";
 
 export default function BookmarksPage() {
     const [bookmarks, setBookmarks] = useState([]);
@@ -57,7 +58,7 @@ export default function BookmarksPage() {
             {!loading && error && (
                 <div className="empty-state">
                     <div className="empty-ico">
-                        ⚠️
+                        <WarningIcon />
                     </div>
 
                     <div className="empty-title">
@@ -78,7 +79,7 @@ export default function BookmarksPage() {
                     <div className="empty-state">
 
                         <div className="empty-ico">
-                            🔖
+                            <BookmarkIcon />
                         </div>
 
                         <div className="empty-title">
@@ -86,7 +87,7 @@ export default function BookmarksPage() {
                         </div>
 
                         <div className="empty-sub">
-                            Tap 🔖 on any voice to save it here.
+                            Tap the bookmark icon on any voice to save it here.
                         </div>
 
                     </div>

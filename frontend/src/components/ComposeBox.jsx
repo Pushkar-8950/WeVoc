@@ -1,7 +1,7 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { publishVoice } from "../api/voice.api";
-import { MicIcon } from "../components/Icons";
+import { MicIcon, StopIcon } from "../components/Icons";
 
 
 export default function ComposeBox({
@@ -9,9 +9,6 @@ export default function ComposeBox({
     onPublished,
 }) {
 
-    // ========================================
-    // STATES
-    // ========================================
 
     const [title, setTitle] =
         useState("");
@@ -22,8 +19,8 @@ export default function ComposeBox({
     const [voiceFile, setVoiceFile] =
         useState(null);
 
-    const [thumbnail, setThumbnail] =
-        useState(null);
+    const [audioMode, setAudioMode] =
+        useState("upload");
 
     const [isAnonymous, setIsAnonymous] =
         useState(false);
@@ -41,20 +38,44 @@ export default function ComposeBox({
         useState("");
 
 
-    // ========================================
-    // REFS
-    // ========================================
 
     const audioInputRef =
         useRef(null);
 
-    const thumbnailInputRef =
+    const mediaRecorderRef =
         useRef(null);
 
+    const mediaStreamRef =
+        useRef(null);
 
-    // ========================================
-    // AUDIO FILE
-    // ========================================
+    const recordedChunksRef =
+        useRef([]);
+
+    const mountedRef =
+        useRef(false);
+
+    useEffect(() => {
+        mountedRef.current = true;
+
+        return () => {
+            mountedRef.current = false;
+            const recorder =
+                mediaRecorderRef.current;
+
+            if (recorder && recorder.state !== "inactive") {
+                recorder.ondataavailable = null;
+                recorder.onstop = null;
+                recorder.onerror = null;
+                recorder.stop();
+            }
+
+            mediaStreamRef.current
+                ?.getTracks()
+                .forEach(track => track.stop());
+        };
+    }, []);
+
+
 
     const handleVoiceFile =
         (e) => {
@@ -72,6 +93,8 @@ export default function ComposeBox({
                     "audio/"
                 )
             ) {
+                setVoiceFile(null);
+                e.target.value = "";
 
                 setError(
                     "Please select a valid audio file."
@@ -88,47 +111,22 @@ export default function ComposeBox({
 
         };
 
+    const handleAudioModeChange = (mode) => {
+        if (recording || mode === audioMode) {
+            return;
+        }
 
-    // ========================================
-    // THUMBNAIL
-    // ========================================
+        setAudioMode(mode);
+        setVoiceFile(null);
+        setError("");
+        setSuccess("");
 
-    const handleThumbnail =
-        (e) => {
-
-            const file =
-                e.target.files?.[0];
-
-            if (!file) {
-                return;
-            }
-
-
-            if (
-                !file.type.startsWith(
-                    "image/"
-                )
-            ) {
-
-                setError(
-                    "Please select a valid image."
-                );
-
-                return;
-
-            }
+        if (audioInputRef.current) {
+            audioInputRef.current.value = "";
+        }
+    };
 
 
-            setThumbnail(file);
-            setError("");
-            setSuccess("");
-
-        };
-
-
-    // ========================================
-    // PUBLISH
-    // ========================================
 
     const handlePublish =
         async (e) => {
@@ -140,9 +138,6 @@ export default function ComposeBox({
             setSuccess("");
 
 
-            // --------------------------------
-            // Validation
-            // --------------------------------
 
             if (!title.trim()) {
 
@@ -169,18 +164,7 @@ export default function ComposeBox({
             if (!voiceFile) {
 
                 setError(
-                    "Please select a voice file."
-                );
-
-                return;
-
-            }
-
-
-            if (!thumbnail) {
-
-                setError(
-                    "Please select a thumbnail."
+                    "Choose an audio file or record your voice."
                 );
 
                 return;
@@ -193,9 +177,6 @@ export default function ComposeBox({
                 setLoading(true);
 
 
-                // --------------------------------
-                // Publish
-                // --------------------------------
 
                 await publishVoice({
 
@@ -207,8 +188,6 @@ export default function ComposeBox({
 
                     voiceFile,
 
-                    thumbnail,
-
                     isAnonymous,
 
                     communityId,
@@ -216,14 +195,10 @@ export default function ComposeBox({
                 });
 
 
-                // --------------------------------
-                // Reset
-                // --------------------------------
 
                 setTitle("");
                 setDescription("");
                 setVoiceFile(null);
-                setThumbnail(null);
                 setIsAnonymous(false);
 
 
@@ -237,16 +212,6 @@ export default function ComposeBox({
                 }
 
 
-                if (
-                    thumbnailInputRef.current
-                ) {
-
-                    thumbnailInputRef.current.value =
-                        "";
-
-                }
-
-
                 setSuccess(
                     communityId
                         ? "Voice posted in community successfully!"
@@ -254,9 +219,6 @@ export default function ComposeBox({
                 );
 
 
-                // --------------------------------
-                // Refresh parent
-                // --------------------------------
 
                 if (onPublished) {
 
@@ -286,23 +248,128 @@ export default function ComposeBox({
         };
 
 
-    // ========================================
-    // RECORDING UI
-    // ========================================
 
-    const handleRecording =
-        () => {
+    const handleRecording = async () => {
+        if (recording) {
+            if (mediaRecorderRef.current?.state === "recording") {
+                mediaRecorderRef.current.stop();
+            }
+            return;
+        }
 
-            setRecording(
-                current => !current
+        if (
+            !navigator.mediaDevices?.getUserMedia ||
+            typeof MediaRecorder === "undefined"
+        ) {
+            setError("Audio recording is not supported in this browser.");
+            return;
+        }
+
+        setError("");
+        setSuccess("");
+        setVoiceFile(null);
+
+        try {
+            const stream =
+                await navigator.mediaDevices.getUserMedia({ audio: true });
+
+            if (!mountedRef.current) {
+                stream.getTracks().forEach(track => track.stop());
+                return;
+            }
+
+            mediaStreamRef.current = stream;
+            const recorder = new MediaRecorder(stream);
+            recordedChunksRef.current = [];
+
+            recorder.ondataavailable = (event) => {
+                if (event.data.size > 0) {
+                    recordedChunksRef.current.push(event.data);
+                }
+            };
+
+            recorder.onstop = () => {
+                const chunks = recordedChunksRef.current;
+                recordedChunksRef.current = [];
+                const mimeType =
+                    recorder.mimeType ||
+                    chunks[0]?.type ||
+                    "audio/webm";
+
+                stream.getTracks().forEach(track => track.stop());
+                mediaStreamRef.current = null;
+                mediaRecorderRef.current = null;
+
+                if (!mountedRef.current) {
+                    return;
+                }
+
+                setRecording(false);
+
+                if (chunks.length === 0) {
+                    setError("No audio was captured. Please try again.");
+                    return;
+                }
+
+                const extension = mimeType.includes("ogg")
+                    ? "ogg"
+                    : mimeType.includes("mp4")
+                        ? "m4a"
+                        : "webm";
+
+                setVoiceFile(
+                    new File(
+                        [new Blob(chunks, { type: mimeType })],
+                        `voice-recording.${extension}`,
+                        { type: mimeType }
+                    )
+                );
+            };
+
+            recorder.onerror = (event) => {
+                console.error("Voice recording failed:", event.error);
+                recordedChunksRef.current = [];
+                recorder.onstop = null;
+                stream.getTracks().forEach(track => track.stop());
+                mediaStreamRef.current = null;
+                mediaRecorderRef.current = null;
+
+                if (!mountedRef.current) {
+                    return;
+                }
+
+                setRecording(false);
+                setError(
+                    event.error?.message ||
+                    "Recording failed. Please try again."
+                );
+            };
+
+            mediaRecorderRef.current = recorder;
+            recorder.start();
+            setRecording(true);
+        } catch (error) {
+            mediaStreamRef.current
+                ?.getTracks()
+                .forEach(track => track.stop());
+            mediaStreamRef.current = null;
+            mediaRecorderRef.current = null;
+            recordedChunksRef.current = [];
+
+            if (!mountedRef.current) {
+                return;
+            }
+
+            console.error("Microphone access failed:", error);
+            setError(
+                error?.name === "NotAllowedError"
+                    ? "Allow microphone access to record audio."
+                    : error?.message || "Could not start recording."
             );
+        }
+    };
 
-        };
 
-
-    // ========================================
-    // RENDER
-    // ========================================
 
     return (
 
@@ -311,9 +378,7 @@ export default function ComposeBox({
             onSubmit={handlePublish}
         >
 
-            {/* ==================================
-                HEADER
-            ================================== */}
+
 
             <div
                 className="compose-header"
@@ -327,21 +392,19 @@ export default function ComposeBox({
 
                     {communityId
                         ? "Post in Community"
-                        : "Create Voice Post"}
+                        : "Create post"}
 
                 </div>
 
             </div>
 
 
-            {/* ==================================
-                TITLE
-            ================================== */}
+
 
             <input
                 type="text"
                 className="compose-title-input"
-                placeholder="Voice title..."
+                placeholder="Title..."
                 value={title}
                 maxLength={100}
                 onChange={(e) =>
@@ -352,9 +415,7 @@ export default function ComposeBox({
             />
 
 
-            {/* ==================================
-                DESCRIPTION
-            ================================== */}
+
 
             <textarea
                 className="compose-textarea"
@@ -374,142 +435,126 @@ export default function ComposeBox({
             />
 
 
-            {/* ==================================
-                FILE INPUTS
-            ================================== */}
-
-            <div
-                className="compose-file-row"
-            >
-
-                {/* AUDIO */}
-
-                <div>
-
-                    <input
-                        ref={audioInputRef}
-                        type="file"
-                        accept="audio/*"
-                        id="voice-file-input"
-                        onChange={
-                            handleVoiceFile
-                        }
-                        hidden
-                    />
 
 
-                    <label
-                        htmlFor="voice-file-input"
-                        className="btn btn-outline btn-sm"
-                    >
-
-                        🎙 Choose Voice
-
-                    </label>
-
-
-                    {voiceFile && (
-
-                        <span
-                            className="compose-file-name"
-                        >
-
-                            {voiceFile.name}
-
-                        </span>
-
-                    )}
-
-                </div>
-
-
-                {/* THUMBNAIL */}
-
-                <div>
-
-                    <input
-                        ref={
-                            thumbnailInputRef
-                        }
-                        type="file"
-                        accept="image/*"
-                        id="thumbnail-file-input"
-                        onChange={
-                            handleThumbnail
-                        }
-                        hidden
-                    />
-
-
-                    <label
-                        htmlFor="thumbnail-file-input"
-                        className="btn btn-outline btn-sm"
-                    >
-
-                        🖼 Thumbnail
-
-                    </label>
-
-
-                    {thumbnail && (
-
-                        <span
-                            className="compose-file-name"
-                        >
-
-                            {thumbnail.name}
-
-                        </span>
-
-                    )}
-
-                </div>
-
-            </div>
-
-
-            {/* ==================================
-                RECORDING
-            ================================== */}
-
-            <div
-                className="compose-record-row"
-            >
-
-                <button
-                    type="button"
-                    className={`rec-btn${
-                        recording
-                            ? " recording"
-                            : ""
-                    }`}
-                    onClick={
-                        handleRecording
-                    }
+            <div className="compose-audio-source">
+                <div
+                    className="compose-audio-modes"
+                    role="group"
+                    aria-label="Choose how to add audio"
                 >
+                    <button
+                        type="button"
+                        className={`compose-audio-mode${
+                            audioMode === "upload"
+                                ? " active"
+                                : ""
+                        }`}
+                        aria-pressed={audioMode === "upload"}
+                        disabled={recording}
+                        onClick={() =>
+                            handleAudioModeChange("upload")
+                        }
+                    >
+                        <MicIcon />
+                        Upload audio
+                    </button>
+                    <button
+                        type="button"
+                        className={`compose-audio-mode${
+                            audioMode === "record"
+                                ? " active"
+                                : ""
+                        }`}
+                        aria-pressed={audioMode === "record"}
+                        disabled={recording}
+                        onClick={() =>
+                            handleAudioModeChange("record")
+                        }
+                    >
+                        <MicIcon />
+                        Record audio
+                    </button>
+                </div>
 
-                    🎙
-
-                </button>
-
-
-                <span>
-
-                    {recording
-                        ? "Recording..."
-                        : "You can also record a voice"}
-
-                </span>
-
+                {audioMode === "upload" ? (
+                    <div className="compose-file-row">
+                        <input
+                            ref={audioInputRef}
+                            type="file"
+                            accept="audio/*"
+                            id="voice-file-input"
+                            onChange={handleVoiceFile}
+                            hidden
+                        />
+                        <label
+                            htmlFor="voice-file-input"
+                            className="compose-upload-button"
+                        >
+                            <MicIcon />
+                            Choose an audio file
+                        </label>
+                        {voiceFile && (
+                            <span className="compose-file-name">
+                                {voiceFile.name}
+                            </span>
+                        )}
+                    </div>
+                ) : (
+                    <div
+                        className={`compose-record-row${
+                            recording
+                                ? " is-recording"
+                                : ""
+                        }`}
+                    >
+                        <button
+                            type="button"
+                            className={`rec-btn${
+                                recording
+                                    ? " recording"
+                                    : ""
+                            }`}
+                            aria-pressed={recording}
+                            aria-label={
+                                recording
+                                    ? "Stop recording"
+                                    : "Start recording"
+                            }
+                            title={
+                                recording
+                                    ? "Stop recording"
+                                    : "Start recording"
+                            }
+                            onClick={handleRecording}
+                        >
+                            {recording
+                                ? <StopIcon />
+                                : <MicIcon />}
+                        </button>
+                        <span aria-live="polite">
+                            {recording
+                                ? "Recording in progress"
+                                : voiceFile
+                                    ? "Recording ready"
+                                    : "Record from your microphone"}
+                        </span>
+                        {voiceFile && (
+                            <span className="compose-file-name">
+                                {voiceFile.name}
+                            </span>
+                        )}
+                    </div>
+                )}
             </div>
 
 
-            {/* ==================================
-                ANONYMOUS
-            ================================== */}
+
 
             <label
-                className="compose-anonymous"
+                className={`compose-anonymous${
+                    isAnonymous ? " active" : ""
+                }`}
             >
 
                 <input
@@ -531,9 +576,7 @@ export default function ComposeBox({
             </label>
 
 
-            {/* ==================================
-                ERROR
-            ================================== */}
+
 
             {error && (
 
@@ -548,9 +591,7 @@ export default function ComposeBox({
             )}
 
 
-            {/* ==================================
-                SUCCESS
-            ================================== */}
+
 
             {success && (
 
@@ -565,28 +606,17 @@ export default function ComposeBox({
             )}
 
 
-            {/* ==================================
-                FOOTER
-            ================================== */}
+
 
             <div
                 className="compose-footer"
             >
 
-                <div
-                    style={{
-                        fontSize: 12,
-                        color:
-                            "var(--ink4)",
-                    }}
-                >
-
-                    {communityId
-                        ? "Only this community will see this post."
-                        : "Share your voice with WeVoc."}
-
-                </div>
-
+                {communityId && (
+                    <div className="compose-community-note">
+                        Only this community will see this post.
+                    </div>
+                )}
 
                 <button
                     type="submit"
@@ -598,7 +628,7 @@ export default function ComposeBox({
                         ? "Publishing..."
                         : communityId
                             ? "Post to Community"
-                            : "Publish Voice"}
+                            : "Publish Post"}
 
                 </button>
 

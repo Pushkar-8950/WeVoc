@@ -4,6 +4,14 @@ import Avatar from "../components/Avatar";
 import PostCard from "../components/PostCard";
 
 import { useApp } from "../context/AppContext";
+import {
+    CameraIcon,
+    CalendarIcon,
+    HeartOutlineIcon,
+    MicIcon,
+    PlusIcon,
+    UsersIcon,
+} from "../components/Icons";
 
 import {
     getCurrentUser,
@@ -37,9 +45,6 @@ export default function ProfilePage() {
     } = useApp();
 
 
-    // =========================
-    // STATES
-    // =========================
 
     const [profile, setProfile] =
         useState(null);
@@ -92,14 +97,10 @@ export default function ProfilePage() {
     const [success, setSuccess] =
         useState("");
 
-    // Full image preview
     const [previewImage, setPreviewImage] =
         useState(null);
 
 
-    // =========================
-    // LOAD PROFILE
-    // =========================
 
     const loadProfile = async () => {
 
@@ -108,9 +109,6 @@ export default function ProfilePage() {
             setLoading(true);
             setError("");
 
-            // ---------------------------------
-            // CURRENT USER
-            // ---------------------------------
 
             const currentUserResponse =
                 await getCurrentUser();
@@ -126,16 +124,10 @@ export default function ProfilePage() {
             }
 
 
-            // ---------------------------------
-            // UPDATE GLOBAL USER
-            // ---------------------------------
 
             setUser(currentUser);
 
 
-            // ---------------------------------
-            // SET FORM
-            // ---------------------------------
 
             setForm({
                 fullname:
@@ -149,9 +141,6 @@ export default function ProfilePage() {
             });
 
 
-            // ---------------------------------
-            // PROFILE INFORMATION
-            // ---------------------------------
 
             const profileResponse =
                 await getUserProfile(
@@ -164,9 +153,6 @@ export default function ProfilePage() {
             setProfile(profileData);
 
 
-            // ---------------------------------
-            // FOLLOWERS + FOLLOWING
-            // ---------------------------------
 
             try {
 
@@ -217,9 +203,6 @@ export default function ProfilePage() {
             }
 
 
-            // ---------------------------------
-            // GET USER'S VOICES
-            // ---------------------------------
 
             const voicesResponse =
                 await getAllVoices(
@@ -247,9 +230,6 @@ export default function ProfilePage() {
             setMyPosts(userVoices);
 
 
-            // ---------------------------------
-            // GET LIKED VOICES
-            // ---------------------------------
 
             const likedResponse =
                 await getLikedVoices();
@@ -293,9 +273,6 @@ export default function ProfilePage() {
     };
 
 
-    // =========================
-    // INITIAL LOAD
-    // =========================
 
     useEffect(() => {
 
@@ -304,9 +281,6 @@ export default function ProfilePage() {
     }, []);
 
 
-    // =========================
-    // SAVE PROFILE DETAILS
-    // =========================
 
     const handleSave = async () => {
 
@@ -414,9 +388,6 @@ export default function ProfilePage() {
     };
 
 
-    // =========================
-    // CHANGE AVATAR
-    // =========================
 
     const handleAvatarChange =
         async (e) => {
@@ -492,9 +463,6 @@ export default function ProfilePage() {
         };
 
 
-    // =========================
-    // CHANGE COVER IMAGE
-    // =========================
 
     const handleCoverChange =
         async (e) => {
@@ -570,9 +538,6 @@ export default function ProfilePage() {
         };
 
 
-    // =========================
-    // CANCEL EDIT
-    // =========================
 
     const handleCancel = () => {
 
@@ -597,9 +562,6 @@ export default function ProfilePage() {
     };
 
 
-    // =========================
-    // OPEN IMAGE PREVIEW
-    // =========================
 
     const openImagePreview =
         (src) => {
@@ -611,9 +573,6 @@ export default function ProfilePage() {
         };
 
 
-    // =========================
-    // CLOSE IMAGE PREVIEW
-    // =========================
 
     const closeImagePreview =
         () => {
@@ -623,9 +582,6 @@ export default function ProfilePage() {
         };
 
 
-    // =========================
-    // LOADING
-    // =========================
 
     if (loading) {
 
@@ -646,9 +602,6 @@ export default function ProfilePage() {
     }
 
 
-    // =========================
-    // ERROR
-    // =========================
 
     if (!profile && error) {
 
@@ -679,9 +632,6 @@ export default function ProfilePage() {
     }
 
 
-    // =========================
-    // DISPLAY USER
-    // =========================
 
     const displayUser =
         user || profile;
@@ -706,9 +656,6 @@ export default function ProfilePage() {
     }
 
 
-    // =========================
-    // FOLLOWER USER OBJECT
-    // =========================
 
     const getFollowerUser =
         (item) => {
@@ -722,9 +669,6 @@ export default function ProfilePage() {
         };
 
 
-    // =========================
-    // FOLLOWING USER OBJECT
-    // =========================
 
     const getFollowingUser =
         (item) => {
@@ -738,41 +682,26 @@ export default function ProfilePage() {
         };
 
 
-    // =========================
-    // RENDER
-    // =========================
 
     return (
 
         <div className="profile-page">
 
 
-            {/* =========================
-                HEADER
-            ========================= */}
 
-            <div className="profile-header">
 
-                <div>
+            <div className="profile-header page-title-header">
 
-                    <div
-                        style={{
-                            fontWeight: 700,
-                            fontSize: 20,
-                        }}
-                    >
+                <div className="page-title-stack">
+
+                    <div className="page-top-title">
 
                         My Profile
 
                     </div>
 
 
-                    <div
-                        style={{
-                            fontSize: 13,
-                            color: "var(--ink3)",
-                        }}
-                    >
+                    <div className="page-top-subtitle">
 
                         @{displayUser.username}
 
@@ -783,9 +712,7 @@ export default function ProfilePage() {
             </div>
 
 
-            {/* =========================
-                ERROR
-            ========================= */}
+
 
             {error && (
 
@@ -798,9 +725,7 @@ export default function ProfilePage() {
             )}
 
 
-            {/* =========================
-                SUCCESS
-            ========================= */}
+
 
             {success && (
 
@@ -813,9 +738,7 @@ export default function ProfilePage() {
             )}
 
 
-            {/* =========================
-                COVER IMAGE
-            ========================= */}
+
 
             <div
                 style={{
@@ -870,7 +793,7 @@ export default function ProfilePage() {
                 )}
 
 
-                {/* Cover upload */}
+
 
                 <label
                     style={{
@@ -889,7 +812,7 @@ export default function ProfilePage() {
 
                     {imageSaving
                         ? "Uploading..."
-                        : "📷 Change cover"}
+                        : <><CameraIcon /> Change cover</>}
 
 
                     <input
@@ -909,16 +832,12 @@ export default function ProfilePage() {
             </div>
 
 
-            {/* =========================
-                PROFILE INFO
-            ========================= */}
+
 
             <div className="profile-info-wrap">
 
 
-                {/* =========================
-                    AVATAR
-                ========================= */}
+
 
                 <div
                     className="profile-avatar-bump"
@@ -943,7 +862,7 @@ export default function ProfilePage() {
                     />
 
 
-                    {/* Avatar upload */}
+
 
                     <label
                         style={{
@@ -958,7 +877,7 @@ export default function ProfilePage() {
                             justifyContent: "center",
                             background:
                                 "var(--crimson)",
-                            color: "#fff",
+                            color: "var(--accent-ink)",
                             cursor: "pointer",
                             border:
                                 "3px solid var(--surface)",
@@ -966,7 +885,7 @@ export default function ProfilePage() {
                         }}
                     >
 
-                        📷
+                        <CameraIcon />
 
 
                         <input
@@ -986,9 +905,7 @@ export default function ProfilePage() {
                 </div>
 
 
-                {/* =========================
-                    EDIT MODE
-                ========================= */}
+
 
                 {editing ? (
 
@@ -1000,7 +917,7 @@ export default function ProfilePage() {
                     >
 
 
-                        {/* FULL NAME */}
+
 
                         <div className="field-group">
 
@@ -1028,7 +945,7 @@ export default function ProfilePage() {
                         </div>
 
 
-                        {/* EMAIL */}
+
 
                         <div className="field-group">
 
@@ -1057,7 +974,7 @@ export default function ProfilePage() {
                         </div>
 
 
-                        {/* BIO */}
+
 
                         <div className="field-group">
 
@@ -1089,7 +1006,7 @@ export default function ProfilePage() {
                         </div>
 
 
-                        {/* BUTTONS */}
+
 
                         <div
                             style={{
@@ -1134,9 +1051,7 @@ export default function ProfilePage() {
                     <>
 
 
-                        {/* =========================
-                            NAME + EDIT
-                        ========================= */}
+
 
                         <div className="profile-title-row">
 
@@ -1167,7 +1082,7 @@ export default function ProfilePage() {
                         </div>
 
 
-                        {/* USERNAME */}
+
 
                         <div className="profile-handle">
 
@@ -1179,7 +1094,7 @@ export default function ProfilePage() {
                         </div>
 
 
-                        {/* BIO */}
+
 
                         {displayUser.bio && (
 
@@ -1194,13 +1109,13 @@ export default function ProfilePage() {
                         )}
 
 
-                        {/* META */}
+
 
                         <div className="profile-meta-row">
 
                             <div className="profile-meta-item">
 
-                                📅 Joined{" "}
+                                <CalendarIcon /> Joined{" "}
 
                                 {fmtDate(
                                     displayUser.createdAt
@@ -1211,14 +1126,12 @@ export default function ProfilePage() {
                         </div>
 
 
-                        {/* =========================
-                            STATS
-                        ========================= */}
+
 
                         <div className="profile-stats-row">
 
 
-                            {/* POSTS */}
+
 
                             <button
                                 type="button"
@@ -1246,7 +1159,7 @@ export default function ProfilePage() {
                             </button>
 
 
-                            {/* FOLLOWERS */}
+
 
                             <button
                                 type="button"
@@ -1277,7 +1190,7 @@ export default function ProfilePage() {
                             </button>
 
 
-                            {/* FOLLOWING */}
+
 
                             <button
                                 type="button"
@@ -1308,7 +1221,7 @@ export default function ProfilePage() {
                             </button>
 
 
-                            {/* LIKED */}
+
 
                             <button
                                 type="button"
@@ -1344,14 +1257,12 @@ export default function ProfilePage() {
             </div>
 
 
-            {/* =========================
-                TABS
-            ========================= */}
+
 
             <div className="tab-strip">
 
 
-                {/* POSTS */}
+
 
                 <button
                     className={`tab-strip-btn${
@@ -1369,7 +1280,7 @@ export default function ProfilePage() {
                 </button>
 
 
-                {/* FOLLOWERS */}
+
 
                 <button
                     className={`tab-strip-btn${
@@ -1389,7 +1300,7 @@ export default function ProfilePage() {
                 </button>
 
 
-                {/* FOLLOWING */}
+
 
                 <button
                     className={`tab-strip-btn${
@@ -1409,7 +1320,7 @@ export default function ProfilePage() {
                 </button>
 
 
-                {/* LIKED */}
+
 
                 <button
                     className={`tab-strip-btn${
@@ -1429,16 +1340,14 @@ export default function ProfilePage() {
             </div>
 
 
-            {/* =========================
-                POSTS
-            ========================= */}
+
 
             {tab === "posts" && (
 
                 myPosts.length === 0 ? (
 
                     <EmptyState
-                        icon="🎙"
+                        icon={MicIcon}
                         title="No posts yet"
                         sub="Your voice posts will appear here."
                     />
@@ -1459,9 +1368,7 @@ export default function ProfilePage() {
             )}
 
 
-            {/* =========================
-                FOLLOWERS
-            ========================= */}
+
 
             {tab === "followers" && (
 
@@ -1476,7 +1383,7 @@ export default function ProfilePage() {
                 ) : followers.length === 0 ? (
 
                     <EmptyState
-                        icon="👥"
+                        icon={UsersIcon}
                         title="No followers yet"
                         sub="People who follow you will appear here."
                     />
@@ -1561,9 +1468,7 @@ export default function ProfilePage() {
             )}
 
 
-            {/* =========================
-                FOLLOWING
-            ========================= */}
+
 
             {tab === "following" && (
 
@@ -1578,7 +1483,7 @@ export default function ProfilePage() {
                 ) : following.length === 0 ? (
 
                     <EmptyState
-                        icon="➕"
+                        icon={PlusIcon}
                         title="Not following anyone"
                         sub="People you follow will appear here."
                     />
@@ -1663,16 +1568,14 @@ export default function ProfilePage() {
             )}
 
 
-            {/* =========================
-                LIKED
-            ========================= */}
+
 
             {tab === "liked" && (
 
                 likedPosts.length === 0 ? (
 
                     <EmptyState
-                        icon="🤍"
+                        icon={HeartOutlineIcon}
                         title="No liked voices"
                         sub="Voices you like will appear here."
                     />
@@ -1693,9 +1596,7 @@ export default function ProfilePage() {
             )}
 
 
-            {/* =========================
-                FULL IMAGE PREVIEW
-            ========================= */}
+
 
             {previewImage && (
 
@@ -1740,15 +1641,13 @@ export default function ProfilePage() {
 }
 
 
-// =========================
-// EMPTY STATE
-// =========================
 
 function EmptyState({
     icon,
     title,
     sub,
 }) {
+    const IconComponent = icon;
 
     return (
 
@@ -1756,7 +1655,7 @@ function EmptyState({
 
             <div className="empty-ico">
 
-                {icon}
+                <IconComponent />
 
             </div>
 

@@ -1,6 +1,5 @@
 import apiClient from "./apiClient";
 
-// Get all notifications
 export const getNotifications = async () => {
     return apiClient("/notifications", {
         method: "GET",
@@ -16,7 +15,6 @@ export const markAsRead = async (notificationId) => {
 };
 
 
-// Mark all notifications as read
 export const markAllAsRead = async () => {
     return apiClient("/notifications/read-all", {
         method: "PATCH",
@@ -24,7 +22,6 @@ export const markAllAsRead = async () => {
 };
 
 
-// Delete a notification
 export const deleteNotification = async (notificationId) => {
     return apiClient(`/notifications/${notificationId}`, {
         method: "DELETE",

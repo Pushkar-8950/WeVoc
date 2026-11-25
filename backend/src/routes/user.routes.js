@@ -17,7 +17,6 @@ import {
 
 const router = Router();
 
-// Public Routes
 router.route("/register").post(
     upload.fields([
         {
@@ -36,7 +35,6 @@ router.route("/login").post(loginUser);
 
 router.route("/refresh-token").post(refreshAccessToken);
 
-// Protected Routes
 router.use(verifyJWT);
 
 router.route("/logout").post(logoutUser);

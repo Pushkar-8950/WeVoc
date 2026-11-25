@@ -1,6 +1,5 @@
 import apiClient from "./apiClient";
 
-// Admin dashboard
 export const getAdminDashboard = async () => {
     return apiClient("/admin/dashboard", {
         method: "GET",
@@ -8,7 +7,6 @@ export const getAdminDashboard = async () => {
 };
 
 
-// Get all users
 export const getAdminUsers = async (
     page = 1,
     limit = 20,
@@ -33,7 +31,6 @@ export const getAdminUsers = async (
 };
 
 
-// Delete user
 export const deleteAdminUser = async (userId) => {
 
     return apiClient(
@@ -45,7 +42,6 @@ export const deleteAdminUser = async (userId) => {
 };
 
 
-// Get all voices
 export const getAdminVoices = async (
     page = 1,
     limit = 20,
@@ -70,7 +66,6 @@ export const getAdminVoices = async (
 };
 
 
-// Delete voice
 export const deleteAdminVoice = async (voiceId) => {
 
     return apiClient(

@@ -12,18 +12,12 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
 
-// =====================================================
-// SEND VOICE MESSAGE
-// =====================================================
 
 const sendVoiceMessage = asyncHandler(
     async (req, res) => {
 
         const { receiverId } = req.params;
 
-        // ---------------------------------------------
-        // Validate receiver
-        // ---------------------------------------------
 
         if (!isValidObjectId(receiverId)) {
             throw new ApiError(
@@ -32,9 +26,6 @@ const sendVoiceMessage = asyncHandler(
             );
         }
 
-        // ---------------------------------------------
-        // Cannot message yourself
-        // ---------------------------------------------
 
         if (
             receiverId.toString() ===
@@ -46,9 +37,6 @@ const sendVoiceMessage = asyncHandler(
             );
         }
 
-        // ---------------------------------------------
-        // Check receiver
-        // ---------------------------------------------
 
         const receiver =
             await User.findById(receiverId)
@@ -63,9 +51,6 @@ const sendVoiceMessage = asyncHandler(
             );
         }
 
-        // ---------------------------------------------
-        // Uploaded voice file
-        // ---------------------------------------------
 
         const voiceFileLocalPath =
             req.file?.path;
@@ -77,9 +62,6 @@ const sendVoiceMessage = asyncHandler(
             );
         }
 
-        // ---------------------------------------------
-        // Upload to Cloudinary
-        // ---------------------------------------------
 
         const voiceFile =
             await uploadOnCloudinary(
@@ -96,9 +78,6 @@ const sendVoiceMessage = asyncHandler(
             );
         }
 
-        // ---------------------------------------------
-        // Save message
-        // ---------------------------------------------
 
         const message =
             await Message.create({
@@ -119,9 +98,6 @@ const sendVoiceMessage = asyncHandler(
 
             });
 
-        // ---------------------------------------------
-        // Populate message
-        // ---------------------------------------------
 
         const populatedMessage =
             await Message.findById(
@@ -136,9 +112,6 @@ const sendVoiceMessage = asyncHandler(
                     "fullname username avatar"
                 );
 
-        // ---------------------------------------------
-        // REAL-TIME SOCKET EMIT
-        // ---------------------------------------------
 
         const io =
             req.app.get("io");
@@ -154,9 +127,6 @@ const sendVoiceMessage = asyncHandler(
 
         }
 
-        // ---------------------------------------------
-        // Response
-        // ---------------------------------------------
 
         return res.status(201).json(
 
@@ -171,9 +141,6 @@ const sendVoiceMessage = asyncHandler(
 );
 
 
-// =====================================================
-// GET ALL CONVERSATIONS
-// =====================================================
 
 const getConversations = asyncHandler(
     async (req, res) => {
@@ -231,7 +198,6 @@ const getConversations = asyncHandler(
             const otherUserId =
                 otherUser._id.toString();
 
-            // Latest message
             if (
                 !conversations.has(
                     otherUserId
@@ -268,7 +234,6 @@ const getConversations = asyncHandler(
                 );
             }
 
-            // Unread incoming messages
             if (
                 !isSender &&
                 !message.isRead
@@ -301,9 +266,6 @@ const getConversations = asyncHandler(
 );
 
 
-// =====================================================
-// GET MESSAGES WITH USER
-// =====================================================
 
 const getMessagesWithUser =
     asyncHandler(
@@ -376,9 +338,6 @@ const getMessagesWithUser =
                         "fullname username avatar"
                     );
 
-            // -----------------------------------------
-            // Mark incoming messages as read
-            // -----------------------------------------
 
             await Message.updateMany(
 
@@ -420,9 +379,6 @@ const getMessagesWithUser =
     );
 
 
-// =====================================================
-// GET TOTAL UNREAD MESSAGE COUNT
-// =====================================================
 
 const getUnreadMessageCount =
     asyncHandler(
@@ -454,9 +410,6 @@ const getUnreadMessageCount =
     );
 
 
-// =====================================================
-// MARK CONVERSATION AS READ
-// =====================================================
 
 const markMessagesAsRead =
     asyncHandler(
@@ -498,7 +451,6 @@ const markMessagesAsRead =
 
                 );
 
-            // Notify sender that messages
             // have been read
             const io =
                 req.app.get("io");

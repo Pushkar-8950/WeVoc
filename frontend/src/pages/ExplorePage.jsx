@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 
-import { SearchIcon } from "../components/Icons";
+import {
+    MicIcon,
+    ProfileIcon,
+    SearchIcon,
+} from "../components/Icons";
 import Avatar from "../components/Avatar";
 import PostCard from "../components/PostCard";
 
@@ -35,9 +39,6 @@ export default function ExplorePage() {
         useState("");
 
 
-    // =========================
-    // SEARCH
-    // =========================
 
     useEffect(() => {
 
@@ -124,9 +125,6 @@ export default function ExplorePage() {
     }, [search]);
 
 
-    // =========================
-    // LIKE CHANGE
-    // =========================
 
     const handleLikeChange = (
         voiceId,
@@ -195,27 +193,22 @@ export default function ExplorePage() {
     };
 
 
-    // =========================
-    // RENDER
-    // =========================
 
     return (
 
         <div className="explore-page">
 
 
-            {/* =========================
-                HEADER
-            ========================= */}
+
 
             <div
                 className="explore-trends"
             >
 
                 <div
-                    className="explore-title"
+                    className="page-top-title explore-title"
                 >
-                    Explore WeVoc
+                    Explore
                 </div>
 
 
@@ -247,9 +240,7 @@ export default function ExplorePage() {
             </div>
 
 
-            {/* =========================
-                ERROR
-            ========================= */}
+
 
             {error && (
 
@@ -262,9 +253,7 @@ export default function ExplorePage() {
             )}
 
 
-            {/* =========================
-                LOADING
-            ========================= */}
+
 
             {loading && (
 
@@ -277,9 +266,7 @@ export default function ExplorePage() {
             )}
 
 
-            {/* =========================
-                EMPTY BEFORE SEARCH
-            ========================= */}
+
 
             {!search.trim() &&
                 !loading && (
@@ -288,7 +275,7 @@ export default function ExplorePage() {
 
                         <div className="empty-ico">
 
-                            🔍
+                            <SearchIcon />
 
                         </div>
 
@@ -313,9 +300,7 @@ export default function ExplorePage() {
                 )}
 
 
-            {/* =========================
-                USERS
-            ========================= */}
+
 
             {!loading &&
                 search.trim() &&
@@ -325,7 +310,7 @@ export default function ExplorePage() {
 
                         <div className="section-lbl">
 
-                            👤 People
+                            <ProfileIcon /> People
 
                         </div>
 
@@ -438,9 +423,7 @@ export default function ExplorePage() {
                 )}
 
 
-            {/* =========================
-                VOICES
-            ========================= */}
+
 
             {!loading &&
                 search.trim() &&
@@ -455,7 +438,7 @@ export default function ExplorePage() {
                             }}
                         >
 
-                            🎙 Voices
+                            <MicIcon /> Voices
 
                         </div>
 
@@ -487,9 +470,7 @@ export default function ExplorePage() {
                 )}
 
 
-            {/* =========================
-                NO RESULT
-            ========================= */}
+
 
             {!loading &&
                 search.trim() &&
@@ -500,7 +481,7 @@ export default function ExplorePage() {
 
                         <div className="empty-ico">
 
-                            😕
+                            <SearchIcon />
 
                         </div>
 

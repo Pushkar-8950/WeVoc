@@ -1,5 +1,5 @@
 import { AppProvider, useApp } from "./context/AppContext";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import Sidebar from "./components/Sidebar";
 import RightPanel from "./components/RightPanel";
@@ -17,11 +17,9 @@ import FriendsPage from "./pages/FriendsPage";
 import BookmarksPage from "./pages/BookmarksPage";
 import CommunitiesPage from "./pages/CommunitiesPage";
 import AdminPage from "./pages/AdminPage";
+import { LockIcon } from "./components/Icons";
 
 
-// ==========================================
-// PAGE RENDERER
-// ==========================================
 
 function PageRenderer() {
 
@@ -53,18 +51,12 @@ function PageRenderer() {
 }
 
 
-// ==========================================
-// PAGES WITHOUT RIGHT PANEL
-// ==========================================
 
 const NO_RIGHT = [
     "dms",
 ];
 
 
-// ==========================================
-// APP
-// ==========================================
 
 export default function App() {
 
@@ -80,9 +72,6 @@ export default function App() {
 }
 
 
-// ==========================================
-// APP SHELL
-// ==========================================
 
 function AppShell() {
 
@@ -90,7 +79,6 @@ function AppShell() {
         user,
         authLoading,
         page,
-        theme,
     } = useApp();
 
 
@@ -98,23 +86,6 @@ function AppShell() {
         useState("login");
 
 
-    // ======================================
-    // THEME
-    // ======================================
-
-    useEffect(() => {
-
-        document.body.classList.toggle(
-            "dark",
-            theme === "dark"
-        );
-
-    }, [theme]);
-
-
-    // ======================================
-    // AUTH LOADING
-    // ======================================
 
     if (authLoading) {
 
@@ -129,9 +100,6 @@ function AppShell() {
     }
 
 
-    // ======================================
-    // NOT LOGGED IN
-    // ======================================
 
     if (!user) {
 
@@ -162,9 +130,6 @@ function AppShell() {
     }
 
 
-    // ======================================
-    // ADMIN
-    // ======================================
 
     /*
        IMPORTANT:
@@ -184,7 +149,7 @@ function AppShell() {
                 <div className="admin-denied">
 
                     <div className="admin-denied-icon">
-                        🔒
+                        <LockIcon />
                     </div>
 
                     <h2>
@@ -207,9 +172,6 @@ function AppShell() {
     }
 
 
-    // ======================================
-    // NORMAL APP
-    // ======================================
 
     const showRight =
         !NO_RIGHT.includes(page);

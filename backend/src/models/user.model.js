@@ -63,7 +63,6 @@ const userSchema = new Schema(
 );
 
 
-// Password hashing
 userSchema.pre("save", async function () {
 
     if (!this.isModified("password")) {
@@ -77,7 +76,6 @@ userSchema.pre("save", async function () {
 });
 
 
-// Check password
 userSchema.methods.isPasswordCorrect =
     async function (password) {
 
@@ -89,7 +87,6 @@ userSchema.methods.isPasswordCorrect =
     };
 
 
-// Access token
 userSchema.methods.generateAccessToken =
     function () {
 
@@ -112,7 +109,6 @@ userSchema.methods.generateAccessToken =
     };
 
 
-// Refresh token
 userSchema.methods.generateRefreshToken =
     function () {
 

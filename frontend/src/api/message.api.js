@@ -1,9 +1,6 @@
 import apiClient from "./apiClient";
 
 
-// =====================================================
-// GET CONVERSATIONS
-// =====================================================
 
 export const getConversations =
     async () => {
@@ -17,9 +14,6 @@ export const getConversations =
     };
 
 
-// =====================================================
-// GET MESSAGES WITH USER
-// =====================================================
 
 export const getMessagesWithUser =
     async (userId) => {
@@ -33,9 +27,6 @@ export const getMessagesWithUser =
     };
 
 
-// =====================================================
-// SEND VOICE MESSAGE
-// =====================================================
 
 export const sendVoiceMessage =
     async (
@@ -61,9 +52,6 @@ export const sendVoiceMessage =
     };
 
 
-// =====================================================
-// UNREAD COUNT
-// =====================================================
 
 export const getUnreadMessageCount =
     async () => {
@@ -77,9 +65,6 @@ export const getUnreadMessageCount =
     };
 
 
-// =====================================================
-// MARK READ
-// =====================================================
 
 export const markMessagesAsRead =
     async (userId) => {

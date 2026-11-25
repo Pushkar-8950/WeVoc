@@ -1,8 +1,10 @@
 import {
+    BrandMarkIcon,
     HomeIcon,
     UsersIcon,
     MicIcon,
     BellIcon,
+    LockIcon,
 } from "./Icons";
 
 export default function AdminSidebar({
@@ -39,7 +41,7 @@ export default function AdminSidebar({
 
             <div className="admin-logo">
                 <div className="admin-logo-mark">
-                    🎙
+                    <BrandMarkIcon />
                 </div>
 
                 <div>
@@ -97,7 +99,7 @@ export default function AdminSidebar({
             <div className="admin-sidebar-bottom">
 
                 <div className="admin-secure">
-                    🔐
+                    <LockIcon />
                     <span>
                         Admin access only
                     </span>

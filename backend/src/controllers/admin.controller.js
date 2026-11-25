@@ -39,7 +39,7 @@ const getAdminDashboard = asyncHandler(async (req, res) => {
             "fullname username avatar"
         )
         .select(
-            "title description thumbnail voiceFile views likesCount owner createdAt"
+            "title description voiceFile views likesCount owner createdAt"
         )
         .sort({
             createdAt: -1

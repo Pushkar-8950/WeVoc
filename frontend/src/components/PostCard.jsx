@@ -34,9 +34,6 @@ import {
 import { timeAgo } from "../utils/helpers";
 
 
-// ======================================================
-// POST CARD
-// ======================================================
 
 export default function PostCard({
     post,
@@ -51,9 +48,6 @@ export default function PostCard({
     } = useApp();
 
 
-    // ==================================================
-    // AUTHOR
-    // ==================================================
 
     const isAnon =
         post?.isAnonymous === true;
@@ -73,9 +67,6 @@ export default function PostCard({
         : `@${author?.username || ""}`;
 
 
-    // ==================================================
-    // LIKE
-    // ==================================================
 
     const [liked, setLiked] =
         useState(post?.isLiked === true);
@@ -89,7 +80,6 @@ export default function PostCard({
         useState(false);
 
 
-    // Keep like state synchronized when
     // parent sends an updated post.
 
     useEffect(() => {
@@ -109,9 +99,6 @@ export default function PostCard({
     ]);
 
 
-    // ==================================================
-    // AUDIO
-    // ==================================================
 
     const [playing, setPlaying] =
         useState(false);
@@ -126,9 +113,6 @@ export default function PostCard({
         useState(0);
 
 
-    // ==================================================
-    // AUDIO SETUP
-    // ==================================================
 
     useEffect(() => {
 
@@ -248,9 +232,6 @@ export default function PostCard({
     }, [post?.voiceFile]);
 
 
-    // ==================================================
-    // COMMENTS
-    // ==================================================
 
     const [showComments, setShowComments] =
         useState(false);
@@ -277,9 +258,6 @@ export default function PostCard({
         useState("");
 
 
-    // ==================================================
-    // BOOKMARK
-    // ==================================================
 
     const [isBkd, setIsBkd] =
         useState(false);
@@ -288,9 +266,6 @@ export default function PostCard({
         useState(false);
 
 
-    // ==================================================
-    // CHECK BOOKMARK
-    // ==================================================
 
     useEffect(() => {
 
@@ -331,9 +306,6 @@ export default function PostCard({
     }, [post?._id]);
 
 
-    // ==================================================
-    // LOAD COMMENTS
-    // ==================================================
 
     const loadComments =
         async () => {
@@ -381,9 +353,6 @@ export default function PostCard({
         };
 
 
-    // ==================================================
-    // OPEN COMMENTS
-    // ==================================================
 
     const handleReply =
         async (e) => {
@@ -410,9 +379,6 @@ export default function PostCard({
         };
 
 
-    // ==================================================
-    // ADD COMMENT
-    // ==================================================
 
     const handleAddComment =
         async (e) => {
@@ -477,9 +443,6 @@ export default function PostCard({
         };
 
 
-    // ==================================================
-    // START EDIT
-    // ==================================================
 
     const startEdit =
         (comment) => {
@@ -495,9 +458,6 @@ export default function PostCard({
         };
 
 
-    // ==================================================
-    // CANCEL EDIT
-    // ==================================================
 
     const cancelEdit =
         () => {
@@ -508,9 +468,6 @@ export default function PostCard({
         };
 
 
-    // ==================================================
-    // UPDATE COMMENT
-    // ==================================================
 
     const handleUpdateComment =
         async (commentId) => {
@@ -564,9 +521,6 @@ export default function PostCard({
         };
 
 
-    // ==================================================
-    // DELETE COMMENT
-    // ==================================================
 
     const handleDeleteComment =
         async (commentId) => {
@@ -617,9 +571,6 @@ export default function PostCard({
         };
 
 
-    // ==================================================
-    // LIKE VOICE
-    // ==================================================
 
     const handleLike =
         async (e) => {
@@ -635,9 +586,6 @@ export default function PostCard({
             }
 
 
-            // ------------------------------------------
-            // Save old state for rollback
-            // ------------------------------------------
 
             const previousLiked =
                 liked;
@@ -646,9 +594,6 @@ export default function PostCard({
                 likeCount;
 
 
-            // ------------------------------------------
-            // Optimistic UI
-            // ------------------------------------------
 
             const optimisticLiked =
                 !previousLiked;
@@ -683,10 +628,7 @@ export default function PostCard({
                     );
 
 
-                // --------------------------------------
-                // Support multiple backend response
                 // formats
-                // --------------------------------------
 
                 const serverLiked =
                     response?.data?.liked ??
@@ -699,9 +641,7 @@ export default function PostCard({
                         : optimisticLiked;
 
 
-                // --------------------------------------
                 // Get server count if backend sends it
-                // --------------------------------------
 
                 const serverCount =
                     response?.data?.likesCount ??
@@ -729,7 +669,6 @@ export default function PostCard({
                     setLikeCount(
                         (count) => {
 
-                            // If backend says same state
                             // as our optimistic state,
                             // keep count.
 
@@ -744,7 +683,6 @@ export default function PostCard({
 
 
                             // Backend state differs.
-                            // Correct count based on
                             // original state.
 
                             if (
@@ -780,9 +718,6 @@ export default function PostCard({
                 }
 
 
-                // --------------------------------------
-                // Notify parent
-                // --------------------------------------
 
                 if (onLikeChange) {
 
@@ -804,9 +739,6 @@ export default function PostCard({
                 );
 
 
-                // --------------------------------------
-                // ROLLBACK
-                // --------------------------------------
 
                 setLiked(
                     previousLiked
@@ -825,9 +757,6 @@ export default function PostCard({
         };
 
 
-    // ==================================================
-    // AUDIO PLAY / PAUSE
-    // ==================================================
 
     const handlePlay =
         async (e) => {
@@ -870,9 +799,6 @@ export default function PostCard({
         };
 
 
-    // ==================================================
-    // BOOKMARK
-    // ==================================================
 
     const handleBookmark =
         async (e) => {
@@ -892,7 +818,6 @@ export default function PostCard({
                 isBkd;
 
 
-            // Optimistic update
 
             setIsBkd(
                 !previousBookmark
@@ -933,7 +858,6 @@ export default function PostCard({
                 );
 
 
-                // Rollback
 
                 setIsBkd(
                     previousBookmark
@@ -948,9 +872,6 @@ export default function PostCard({
         };
 
 
-    // ==================================================
-    // USER PROFILE
-    // ==================================================
 
     const goUser =
         (e) => {
@@ -973,9 +894,6 @@ export default function PostCard({
         };
 
 
-    // ==================================================
-    // SHARE
-    // ==================================================
 
     const handleShare =
         async (e) => {
@@ -1021,7 +939,6 @@ export default function PostCard({
 
             } catch (error) {
 
-                // User cancelling native share
                 // is not an actual error.
 
                 console.log(
@@ -1033,9 +950,6 @@ export default function PostCard({
         };
 
 
-    // ==================================================
-    // FORMAT DURATION
-    // ==================================================
 
     const formatDuration =
         (seconds) => {
@@ -1071,9 +985,6 @@ export default function PostCard({
         };
 
 
-    // ==================================================
-    // COMMENT COUNT
-    // ==================================================
 
     const commentCount =
         showComments
@@ -1085,9 +996,6 @@ export default function PostCard({
             );
 
 
-    // ==================================================
-    // SCORE
-    // ==================================================
 
     const score =
         post?.score ??
@@ -1097,9 +1005,6 @@ export default function PostCard({
         );
 
 
-    // ==================================================
-    // RENDER
-    // ==================================================
 
     return (
 
@@ -1112,9 +1017,7 @@ export default function PostCard({
             style={style}
         >
 
-            {/* =========================================
-                AVATAR
-            ========================================= */}
+
 
             <Avatar
                 name={
@@ -1136,16 +1039,12 @@ export default function PostCard({
             />
 
 
-            {/* =========================================
-                BODY
-            ========================================= */}
+
 
             <div className="post-body-col">
 
 
-                {/* =====================================
-                    HEADER
-                ===================================== */}
+
 
                 <div className="post-header">
 
@@ -1214,9 +1113,7 @@ export default function PostCard({
                 </div>
 
 
-                {/* =====================================
-                    TITLE
-                ===================================== */}
+
 
                 {post?.title && (
 
@@ -1229,9 +1126,7 @@ export default function PostCard({
                 )}
 
 
-                {/* =====================================
-                    DESCRIPTION
-                ===================================== */}
+
 
                 {post?.description && (
 
@@ -1244,9 +1139,7 @@ export default function PostCard({
                 )}
 
 
-                {/* =====================================
-                    AUDIO
-                ===================================== */}
+
 
                 <div className="audio-player">
 
@@ -1288,16 +1181,12 @@ export default function PostCard({
                 </div>
 
 
-                {/* =====================================
-                    ACTIONS
-                ===================================== */}
+
 
                 <div className="post-actions">
 
 
-                    {/* =================================
-                        COMMENTS
-                    ================================= */}
+
 
                     <button
                         type="button"
@@ -1323,9 +1212,7 @@ export default function PostCard({
                     </button>
 
 
-                    {/* =================================
-                        LIKE
-                    ================================= */}
+
 
                     <button
                         type="button"
@@ -1350,8 +1237,14 @@ export default function PostCard({
                         <span className="act-ico">
 
                             {liked
-                                ? <HeartIcon />
-                                : <HeartOutlineIcon />
+                                ? <HeartIcon
+                                    fill="currentColor"
+                                    stroke="currentColor"
+                                />
+                                : <HeartOutlineIcon
+                                    fill="none"
+                                    stroke="currentColor"
+                                />
                             }
 
                         </span>
@@ -1366,9 +1259,7 @@ export default function PostCard({
                     </button>
 
 
-                    {/* =================================
-                        BOOKMARK
-                    ================================= */}
+
 
                     <button
                         type="button"
@@ -1388,14 +1279,6 @@ export default function PostCard({
                                 ? "Remove bookmark"
                                 : "Save voice"
                         }
-                        style={{
-                            color:
-                                isBkd
-                                    ? "var(--crimson)"
-                                    : "var(--ink3)",
-                            transition:
-                                "all 0.2s ease",
-                        }}
                     >
 
                         <span
@@ -1427,9 +1310,7 @@ export default function PostCard({
                     </button>
 
 
-                    {/* =================================
-                        SHARE
-                    ================================= */}
+
 
                     <button
                         type="button"
@@ -1448,9 +1329,7 @@ export default function PostCard({
                     </button>
 
 
-                    {/* =================================
-                        SCORE
-                    ================================= */}
+
 
                     <div className="score-badge">
 
@@ -1463,9 +1342,7 @@ export default function PostCard({
                 </div>
 
 
-                {/* =====================================
-                    COMMENTS
-                ===================================== */}
+
 
                 {showComments && (
 
@@ -1475,9 +1352,7 @@ export default function PostCard({
                         }}
                     >
 
-                        {/* =============================
-                            ADD COMMENT
-                        ============================= */}
+
 
                         <form
                             onSubmit={
@@ -1527,9 +1402,7 @@ export default function PostCard({
                         </form>
 
 
-                        {/* =============================
-                            ERROR
-                        ============================= */}
+
 
                         {commentError && (
 
@@ -1547,9 +1420,7 @@ export default function PostCard({
                         )}
 
 
-                        {/* =============================
-                            LOADING
-                        ============================= */}
+
 
                         {commentsLoading && (
 
@@ -1566,9 +1437,7 @@ export default function PostCard({
                         )}
 
 
-                        {/* =============================
-                            EMPTY
-                        ============================= */}
+
 
                         {!commentsLoading &&
                             comments.length === 0 && (
@@ -1587,9 +1456,7 @@ export default function PostCard({
                             )}
 
 
-                        {/* =============================
-                            COMMENT LIST
-                        ============================= */}
+
 
                         {!commentsLoading &&
                             comments.map(
@@ -1740,9 +1607,7 @@ export default function PostCard({
                                                 </div>
 
 
-                                                {/* =================
-                                                    EDIT COMMENT
-                                                ================= */}
+
 
                                                 {editingCommentId ===
                                                 comment._id ? (

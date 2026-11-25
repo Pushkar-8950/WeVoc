@@ -2,6 +2,7 @@ import Avatar from "./Avatar";
 
 import {
     BookmarkIcon,
+    BrandMarkIcon,
     BellIcon,
     CommunityIcon,
     HomeIcon,
@@ -9,6 +10,7 @@ import {
     MicIcon,
     ProfileIcon,
     SearchIcon,
+    SettingsIcon,
     UsersIcon,
 } from "./Icons";
 
@@ -92,9 +94,7 @@ export default function Sidebar() {
         <aside className="sidebar">
 
 
-            {/* =========================
-                LOGO
-            ========================= */}
+
 
             <div
                 className="sidebar-logo"
@@ -102,13 +102,16 @@ export default function Sidebar() {
                     navTo("feed")
                 }
             >
-                WeVoc
+                <span className="logo-icon">
+                    <BrandMarkIcon />
+                </span>
+                <span className="logo-wordmark">
+                    We<span className="brand-highlight">V</span>oc
+                </span>
             </div>
 
 
-            {/* =========================
-    NAVIGATION
-========================= */}
+
 
 <nav>
 
@@ -158,9 +161,7 @@ export default function Sidebar() {
         )}
 
 
-        {/* =========================
-            ADMIN PANEL
-        ========================= */}
+
 
         {user?.role === "admin" && (
 
@@ -178,7 +179,7 @@ export default function Sidebar() {
                 >
 
                     <span className="nav-btn-icon">
-                        ⚙️
+                        <SettingsIcon />
                     </span>
 
 
@@ -196,9 +197,7 @@ export default function Sidebar() {
 
 </nav>
 
-            {/* =========================
-                NEW VOICE
-            ========================= */}
+
 
             <button
                 className="sidebar-post-btn"
@@ -216,9 +215,7 @@ export default function Sidebar() {
             </button>
 
 
-            {/* =========================
-                PROFILE FOOTER
-            ========================= */}
+
 
             <div
                 className="sidebar-profile"
@@ -277,39 +274,13 @@ export default function Sidebar() {
                 </div>
 
 
-                {/* Logout */}
+
 
 <button
     type="button"
+    className="sidebar-logout"
     onClick={handleLogout}
     title="Logout"
-    style={{
-        cursor: "pointer",
-        border: "1px solid rgba(220, 38, 38, 0.25)",
-        background: "rgba(220, 38, 38, 0.08)",
-        color: "#dc2626",
-        fontSize: "12px",
-        fontWeight: 700,
-        padding: "7px 11px",
-        borderRadius: "8px",
-        transition: "all 0.2s ease",
-    }}
-    onMouseEnter={(e) => {
-        e.currentTarget.style.background =
-            "rgba(220, 38, 38, 0.15)";
-        e.currentTarget.style.borderColor =
-            "rgba(220, 38, 38, 0.45)";
-        e.currentTarget.style.transform =
-            "translateY(-1px)";
-    }}
-    onMouseLeave={(e) => {
-        e.currentTarget.style.background =
-            "rgba(220, 38, 38, 0.08)";
-        e.currentTarget.style.borderColor =
-            "rgba(220, 38, 38, 0.25)";
-        e.currentTarget.style.transform =
-            "translateY(0)";
-    }}
 >
     Logout
 </button>

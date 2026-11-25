@@ -21,11 +21,6 @@ const voiceSchema = new Schema(
             required: true,
         },
 
-        thumbnail: {
-            type: String,
-            default: "",
-        },
-
         duration: {
             type: Number,
             default: 0,
@@ -37,7 +32,6 @@ const voiceSchema = new Schema(
             required: true,
         },
 
-        // Community post ke liye
         community: {
             type: Schema.Types.ObjectId,
             ref: "Community",
@@ -65,7 +59,6 @@ const voiceSchema = new Schema(
 );
 
 
-// Useful indexes
 voiceSchema.index({
     community: 1,
     createdAt: -1,

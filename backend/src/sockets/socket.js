@@ -4,9 +4,6 @@ import { Server } from "socket.io";
 import { User } from "../models/user.model.js";
 
 
-// =====================================================
-// COOKIE PARSER
-// =====================================================
 
 const getCookie = (
     cookieHeader,
@@ -39,9 +36,6 @@ const getCookie = (
 };
 
 
-// =====================================================
-// INITIALIZE SOCKET.IO
-// =====================================================
 
 export const initializeSocket = (
     httpServer
@@ -75,9 +69,6 @@ export const initializeSocket = (
         );
 
 
-    // =================================================
-    // SOCKET AUTHENTICATION
-    // =================================================
 
     io.use(
         async (
@@ -98,7 +89,6 @@ export const initializeSocket = (
                         "accessToken"
                     );
 
-                // Optional Authorization fallback
                 const authToken =
                     socket.handshake
                         .auth
@@ -162,9 +152,6 @@ export const initializeSocket = (
     );
 
 
-    // =================================================
-    // CONNECTION
-    // =================================================
 
     io.on(
         "connection",
@@ -178,18 +165,12 @@ export const initializeSocket = (
             );
 
 
-            // -----------------------------------------
-            // Personal room
-            // -----------------------------------------
 
             socket.join(
                 `user:${userId}`
             );
 
 
-            // -----------------------------------------
-            // Online event
-            // -----------------------------------------
 
             io.emit(
                 "user:online",
@@ -199,9 +180,6 @@ export const initializeSocket = (
             );
 
 
-            // -----------------------------------------
-            // Ping
-            // -----------------------------------------
 
             socket.on(
                 "ping:server",
@@ -215,9 +193,6 @@ export const initializeSocket = (
             );
 
 
-            // -----------------------------------------
-            // Typing
-            // -----------------------------------------
 
             socket.on(
                 "typing:start",
@@ -241,9 +216,6 @@ export const initializeSocket = (
             );
 
 
-            // -----------------------------------------
-            // Stop typing
-            // -----------------------------------------
 
             socket.on(
                 "typing:stop",
@@ -267,9 +239,6 @@ export const initializeSocket = (
             );
 
 
-            // -----------------------------------------
-            // Disconnect
-            // -----------------------------------------
 
             socket.on(
                 "disconnect",

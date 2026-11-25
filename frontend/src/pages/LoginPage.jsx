@@ -1,5 +1,10 @@
 import { useState } from "react";
 import { useApp } from "../context/AppContext";
+import {
+    BrandMarkIcon,
+    EyeIcon,
+    EyeOffIcon,
+} from "../components/Icons";
 
 
 export default function LoginPage({ onRegister }) {
@@ -41,17 +46,17 @@ export default function LoginPage({ onRegister }) {
     return (
         <div className="auth-page">
             <div className="auth-card">
-                {/* Logo */}
+
                 <div className="auth-logo">
                     <div className="auth-logo-icon">
-                        🎙
+                        <BrandMarkIcon />
                     </div>
                     <div className="auth-logo-wordmark">
                         We<span>Voc</span>
                     </div>
                 </div>
 
-                {/* Header */}
+
                 <div className="auth-header">
                     <h1>
                         Welcome back
@@ -61,16 +66,16 @@ export default function LoginPage({ onRegister }) {
                     </p>
                 </div>
 
-                {/* Login Form */}
+
                 <form onSubmit={handleSubmit}>
-                    {/* Error */}
+
                     {error && (
                         <div className="auth-error">
                             {error}
                         </div>
                     )}
 
-                    {/* Email or Username */}
+
                     <div className="form-group">
                         <label htmlFor="identifier">
                             Email or Username
@@ -86,7 +91,7 @@ export default function LoginPage({ onRegister }) {
                     </div>
 
 
-                    {/* Password */}
+
 
                     <div className="form-group">
 
@@ -159,8 +164,8 @@ export default function LoginPage({ onRegister }) {
                             >
 
                                 {showPassword
-                                    ? "🙈"
-                                    : "👁️"}
+                                    ? <EyeOffIcon />
+                                    : <EyeIcon />}
 
                             </button>
 
@@ -169,7 +174,7 @@ export default function LoginPage({ onRegister }) {
                     </div>
 
 
-                    {/* Login Button */}
+
 
                     <button
                         type="submit"
@@ -187,7 +192,7 @@ export default function LoginPage({ onRegister }) {
                 </form>
 
 
-                {/* Register */}
+
 
                 <div className="auth-footer">
 

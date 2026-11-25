@@ -2,11 +2,6 @@ import { useEffect, useState } from "react";
 
 import Avatar from "./Avatar";
 
-import {
-    MoonIcon,
-    SunIcon,
-} from "./Icons";
-
 import { useApp } from "../context/AppContext";
 
 import {
@@ -26,21 +21,24 @@ import {
     getSuggestedUsers,
 } from "../api/user.api";
 
+import {
+    EyeIcon,
+    HeartIcon,
+    MicIcon,
+    ProfileIcon,
+    SearchIcon,
+} from "./Icons";
+
 
 export default function RightPanel() {
 
     const {
         navigate,
-        theme,
-        toggleTheme,
         searchQuery,
         user,
     } = useApp();
 
 
-    // =========================================
-    // STATE
-    // =========================================
 
     const [following, setFollowing] = useState({});
 
@@ -66,9 +64,6 @@ export default function RightPanel() {
         useState(true);
 
 
-    // =========================================
-    // LOAD RIGHT PANEL DATA
-    // =========================================
 
     useEffect(() => {
 
@@ -84,18 +79,13 @@ export default function RightPanel() {
                     suggestedResponse,
                 ] = await Promise.all([
 
-                    // Trending voices
                     getAllVoices(1, 20),
 
-                    // People you may know
                     getSuggestedUsers(),
 
                 ]);
 
 
-                // =================================
-                // TRENDING VOICES
-                // =================================
 
                 const voices =
                     voicesResponse?.data?.voices || [];
@@ -121,9 +111,6 @@ export default function RightPanel() {
                 setTrendingVoices(trending);
 
 
-                // =================================
-                // PEOPLE YOU MAY KNOW
-                // =================================
 
                 const suggested =
                     Array.isArray(
@@ -172,9 +159,6 @@ export default function RightPanel() {
     }, [user?._id]);
 
 
-    // =========================================
-    // SEARCH
-    // =========================================
 
     useEffect(() => {
 
@@ -263,9 +247,6 @@ export default function RightPanel() {
     }, [searchQuery]);
 
 
-    // =========================================
-    // FOLLOW / UNFOLLOW
-    // =========================================
 
     const handleFollow = async (targetUser) => {
 
@@ -321,9 +302,6 @@ export default function RightPanel() {
     };
 
 
-    // =========================================
-    // SEARCHING
-    // =========================================
 
     const isSearching =
         searchQuery.trim().length > 1;
@@ -335,9 +313,6 @@ export default function RightPanel() {
             : suggestedUsers;
 
 
-    // =========================================
-    // NORMALIZE USER
-    // =========================================
 
     const normalizeUser = (rawUser) => {
 
@@ -367,51 +342,16 @@ export default function RightPanel() {
     };
 
 
-    // =========================================
-    // RENDER
-    // =========================================
 
     return (
 
         <aside className="right-panel">
 
 
-            {/* =================================
-                THEME
-            ================================= */}
-
-            <button
-                className="theme-toggle"
-                onClick={toggleTheme}
-            >
-
-                {theme === "dark" ? (
-
-                    <>
-                        <SunIcon />
-                        Light Mode
-                    </>
-
-                ) : (
-
-                    <>
-                        <MoonIcon />
-                        Dark Mode
-                    </>
-
-                )}
-
-            </button>
-
-
-            {/* =================================
-                TRENDING
-            ================================= */}
-
             {!isSearching && (
 
                 <div
-                    className="rp-box"
+                    className="rp-box rp-trending-box"
                     style={{
                         marginBottom: 16,
                     }}
@@ -498,12 +438,12 @@ export default function RightPanel() {
 
                                         <div className="trend-count">
 
-                                            ❤️{" "}
+                                            <HeartIcon />{" "}
                                             {voice.likesCount || 0}
 
                                             {" · "}
 
-                                            👁{" "}
+                                            <EyeIcon />{" "}
                                             {voice.views || 0}
 
                                         </div>
@@ -522,11 +462,9 @@ export default function RightPanel() {
             )}
 
 
-            {/* =================================
-                PEOPLE / SEARCH
-            ================================= */}
 
-            <div className="rp-box">
+
+            <div className="rp-box rp-suggestions-box">
 
                 <div className="rp-box-title">
 
@@ -537,7 +475,7 @@ export default function RightPanel() {
                 </div>
 
 
-                {/* SEARCH LOADING */}
+
 
                 {isSearching &&
                     searchLoading && (
@@ -555,7 +493,7 @@ export default function RightPanel() {
                     )}
 
 
-                {/* SEARCH ERROR */}
+
 
                 {isSearching &&
                     !searchLoading &&
@@ -574,7 +512,7 @@ export default function RightPanel() {
                     )}
 
 
-                {/* USERS */}
+
 
                 {!searchLoading &&
                     !searchError &&
@@ -594,7 +532,7 @@ export default function RightPanel() {
                                             "var(--ink3)",
                                     }}
                                 >
-                                    👤 People
+                                    <ProfileIcon /> People
                                 </div>
 
                             )}
@@ -626,7 +564,7 @@ export default function RightPanel() {
                                                 className="suggest-row"
                                             >
 
-                                                {/* Avatar */}
+
 
                                                 <Avatar
                                                     name={u.name}
@@ -641,7 +579,7 @@ export default function RightPanel() {
                                                 />
 
 
-                                                {/* User */}
+
 
                                                 <div
                                                     className="suggest-names"
@@ -671,7 +609,7 @@ export default function RightPanel() {
                                                 </div>
 
 
-                                                {/* Follow */}
+
 
                                                 {!isCurrentUser && (
 
@@ -714,7 +652,7 @@ export default function RightPanel() {
                     )}
 
 
-                {/* VOICES SEARCH */}
+
 
                 {isSearching &&
                     !searchLoading &&
@@ -733,7 +671,7 @@ export default function RightPanel() {
                                         "var(--ink3)",
                                 }}
                             >
-                                🎙 Voices
+                                <MicIcon /> Voices
                             </div>
 
 
@@ -755,43 +693,9 @@ export default function RightPanel() {
                                         }
                                     >
 
-                                        {voice.thumbnail ? (
-
-                                            <img
-                                                src={
-                                                    voice.thumbnail
-                                                }
-                                                alt={
-                                                    voice.title
-                                                }
-                                                style={{
-                                                    width: 44,
-                                                    height: 44,
-                                                    borderRadius: 8,
-                                                    objectFit: "cover",
-                                                    flexShrink: 0,
-                                                }}
-                                            />
-
-                                        ) : (
-
-                                            <div
-                                                style={{
-                                                    width: 44,
-                                                    height: 44,
-                                                    borderRadius: 8,
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                    justifyContent: "center",
-                                                    background:
-                                                        "var(--surface2)",
-                                                    flexShrink: 0,
-                                                }}
-                                            >
-                                                🎙
-                                            </div>
-
-                                        )}
+                                        <div className="rp-voice-mark">
+                                            <MicIcon />
+                                        </div>
 
 
                                         <div
@@ -836,7 +740,7 @@ export default function RightPanel() {
 
                                                 {" · "}
 
-                                                ❤️{" "}
+                                                <HeartIcon />{" "}
                                                 {
                                                     voice.likesCount ??
                                                     0
@@ -855,7 +759,7 @@ export default function RightPanel() {
                     )}
 
 
-                {/* NO SEARCH RESULTS */}
+
 
                 {isSearching &&
                     !searchLoading &&
@@ -878,7 +782,7 @@ export default function RightPanel() {
                                     marginBottom: 6,
                                 }}
                             >
-                                😕
+                                <SearchIcon />
                             </div>
 
                             No results found
@@ -888,7 +792,7 @@ export default function RightPanel() {
                     )}
 
 
-                {/* NO PEOPLE */}
+
 
                 {!isSearching &&
                     !panelLoading &&
@@ -909,9 +813,7 @@ export default function RightPanel() {
             </div>
 
 
-            {/* =================================
-                FOOTER
-            ================================= */}
+
 
             <p
                 style={{

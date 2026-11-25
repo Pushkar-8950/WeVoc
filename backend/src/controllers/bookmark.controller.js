@@ -27,7 +27,6 @@ const toggleBookmark = asyncHandler(async (req, res) => {
         voice: voiceId,
     });
 
-    // Remove bookmark
     if (existingBookmark) {
 
         await Bookmark.findByIdAndDelete(
@@ -45,7 +44,6 @@ const toggleBookmark = asyncHandler(async (req, res) => {
         );
     }
 
-    // Add bookmark
     const bookmark = await Bookmark.create({
         user: req.user._id,
         voice: voiceId,
@@ -123,7 +121,6 @@ const getBookmarkedVoices = asyncHandler(
                                 title: 1,
                                 description: 1,
                                 voiceFile: 1,
-                                thumbnail: 1,
                                 duration: 1,
                                 views: 1,
                                 owner: 1,

@@ -10,9 +10,6 @@ import { CommunityMember } from "../models/communityMember.model.js";
 import { isValidObjectId } from "mongoose";
 
 
-// ======================================================
-// PUBLISH VOICE
-// ======================================================
 
 const publishVoice = asyncHandler(async (req, res) => {
 
@@ -24,9 +21,6 @@ const publishVoice = asyncHandler(async (req, res) => {
     } = req.body;
 
 
-    // ==================================================
-    // BASIC VALIDATION
-    // ==================================================
 
     if (!title?.trim()) {
         throw new ApiError(
@@ -44,16 +38,9 @@ const publishVoice = asyncHandler(async (req, res) => {
     }
 
 
-    // ==================================================
-    // FILES
-    // ==================================================
 
     const voiceFileLocalPath =
-        req.files?.voiceFile?.[0]?.path;
-
-
-    const thumbnailLocalPath =
-        req.files?.thumbnail?.[0]?.path;
+        req.file?.path;
 
 
     if (!voiceFileLocalPath) {
@@ -63,18 +50,6 @@ const publishVoice = asyncHandler(async (req, res) => {
         );
     }
 
-
-    if (!thumbnailLocalPath) {
-        throw new ApiError(
-            400,
-            "Thumbnail is required"
-        );
-    }
-
-
-    // ==================================================
-    // COMMUNITY VALIDATION
-    // ==================================================
 
     let community = null;
 
@@ -109,9 +84,7 @@ const publishVoice = asyncHandler(async (req, res) => {
         }
 
 
-        // ----------------------------------------------
         // Check whether current user is member
-        // ----------------------------------------------
 
         const membership =
             await CommunityMember.findOne({
@@ -135,9 +108,6 @@ const publishVoice = asyncHandler(async (req, res) => {
     }
 
 
-    // ==================================================
-    // UPLOAD VOICE
-    // ==================================================
 
     const voiceFile =
         await uploadOnCloudinary(
@@ -158,32 +128,6 @@ const publishVoice = asyncHandler(async (req, res) => {
     }
 
 
-    // ==================================================
-    // UPLOAD THUMBNAIL
-    // ==================================================
-
-    const thumbnail =
-        await uploadOnCloudinary(
-            thumbnailLocalPath
-        );
-
-
-    if (
-        !thumbnail ||
-        !thumbnail.url
-    ) {
-
-        throw new ApiError(
-            400,
-            "Error while uploading thumbnail"
-        );
-
-    }
-
-
-    // ==================================================
-    // CREATE VOICE
-    // ==================================================
 
     const voice =
         await Voice.create({
@@ -196,9 +140,6 @@ const publishVoice = asyncHandler(async (req, res) => {
 
             voiceFile:
                 voiceFile.url,
-
-            thumbnail:
-                thumbnail.url,
 
             owner:
                 req.user._id,
@@ -221,9 +162,6 @@ const publishVoice = asyncHandler(async (req, res) => {
         });
 
 
-    // ==================================================
-    // UPDATE COMMUNITY POST COUNT
-    // ==================================================
 
     if (community) {
 
@@ -239,9 +177,6 @@ const publishVoice = asyncHandler(async (req, res) => {
     }
 
 
-    // ==================================================
-    // POPULATE OWNER + COMMUNITY
-    // ==================================================
 
     const createdVoice =
         await Voice.findById(
@@ -257,9 +192,6 @@ const publishVoice = asyncHandler(async (req, res) => {
         );
 
 
-    // ==================================================
-    // RESPONSE
-    // ==================================================
 
     return res.status(201).json(
 
@@ -276,9 +208,6 @@ const publishVoice = asyncHandler(async (req, res) => {
 });
 
 
-// ======================================================
-// GET ALL VOICES
-// ======================================================
 
 const getAllVoices = asyncHandler(async (req, res) => {
 
@@ -302,9 +231,6 @@ const getAllVoices = asyncHandler(async (req, res) => {
             },
 
 
-            // ==========================================
-            // OWNER
-            // ==========================================
 
             {
                 $lookup: {
@@ -349,9 +275,6 @@ const getAllVoices = asyncHandler(async (req, res) => {
             },
 
 
-            // ==========================================
-            // COMMUNITY
-            // ==========================================
 
             {
                 $lookup: {
@@ -402,9 +325,6 @@ const getAllVoices = asyncHandler(async (req, res) => {
             },
 
 
-            // ==========================================
-            // LIKES
-            // ==========================================
 
             {
                 $lookup: {
@@ -490,9 +410,6 @@ const getAllVoices = asyncHandler(async (req, res) => {
 });
 
 
-// ======================================================
-// GET COMMUNITY VOICES
-// ======================================================
 
 const getCommunityVoices = asyncHandler(
     async (req, res) => {
@@ -567,9 +484,6 @@ const getCommunityVoices = asyncHandler(
 );
 
 
-// ======================================================
-// GET VOICE BY ID
-// ======================================================
 
 const getVoiceById = asyncHandler(
     async (req, res) => {
@@ -639,9 +553,6 @@ const getVoiceById = asyncHandler(
 );
 
 
-// ======================================================
-// UPDATE VOICE
-// ======================================================
 
 const updateVoice = asyncHandler(
     async (req, res) => {
@@ -669,10 +580,6 @@ const updateVoice = asyncHandler(
             title,
             description
         } = req.body;
-
-
-        const thumbnailLocalPath =
-            req.file?.path;
 
 
         const voice =
@@ -704,37 +611,6 @@ const updateVoice = asyncHandler(
         }
 
 
-        let thumbnailUrl =
-            voice.thumbnail;
-
-
-        if (thumbnailLocalPath) {
-
-            const thumbnail =
-                await uploadOnCloudinary(
-                    thumbnailLocalPath
-                );
-
-
-            if (
-                !thumbnail ||
-                !thumbnail.url
-            ) {
-
-                throw new ApiError(
-                    400,
-                    "Error while uploading thumbnail"
-                );
-
-            }
-
-
-            thumbnailUrl =
-                thumbnail.url;
-
-        }
-
-
         const updatedVoice =
             await Voice.findByIdAndUpdate(
 
@@ -749,10 +625,7 @@ const updateVoice = asyncHandler(
 
                         description:
                             description?.trim() ||
-                            voice.description,
-
-                        thumbnail:
-                            thumbnailUrl
+                            voice.description
 
                     }
                 },
@@ -786,9 +659,6 @@ const updateVoice = asyncHandler(
 );
 
 
-// ======================================================
-// DELETE VOICE
-// ======================================================
 
 const deleteVoice = asyncHandler(
     async (req, res) => {

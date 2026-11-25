@@ -9,9 +9,6 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
 
-// =====================================================
-// CREATE COMMUNITY
-// =====================================================
 
 const createCommunity = asyncHandler(async (req, res) => {
 
@@ -89,7 +86,6 @@ const createCommunity = asyncHandler(async (req, res) => {
         });
 
 
-    // Creator automatically becomes owner
     await CommunityMember.create({
 
         community:
@@ -124,9 +120,6 @@ const createCommunity = asyncHandler(async (req, res) => {
 });
 
 
-// =====================================================
-// GET ALL COMMUNITIES
-// =====================================================
 
 const getAllCommunities = asyncHandler(
     async (req, res) => {
@@ -185,7 +178,6 @@ const getAllCommunities = asyncHandler(
                 });
 
 
-        // Find communities current user joined
         const memberships =
             await CommunityMember.find({
                 user: req.user._id,
@@ -229,9 +221,6 @@ const getAllCommunities = asyncHandler(
 );
 
 
-// =====================================================
-// GET SINGLE COMMUNITY
-// =====================================================
 
 const getCommunityById = asyncHandler(
     async (req, res) => {
@@ -298,9 +287,6 @@ const getCommunityById = asyncHandler(
 );
 
 
-// =====================================================
-// JOIN COMMUNITY
-// =====================================================
 
 const joinCommunity = asyncHandler(
     async (req, res) => {
@@ -395,9 +381,6 @@ const joinCommunity = asyncHandler(
 );
 
 
-// =====================================================
-// LEAVE COMMUNITY
-// =====================================================
 
 const leaveCommunity = asyncHandler(
     async (req, res) => {
@@ -481,9 +464,6 @@ const leaveCommunity = asyncHandler(
 );
 
 
-// =====================================================
-// GET MEMBERS
-// =====================================================
 
 const getCommunityMembers =
     asyncHandler(
@@ -612,9 +592,6 @@ const getCommunityMembers =
     }
 );
 
-// =====================================================
-// UPDATE COMMUNITY
-// =====================================================
 
 const updateCommunity =
     asyncHandler(
@@ -728,9 +705,6 @@ const updateCommunity =
     );
 
 
-// =====================================================
-// DELETE COMMUNITY
-// =====================================================
 
 const deleteCommunity =
     asyncHandler(

@@ -18,6 +18,32 @@ function Icon({ className = '', ...props }) {
   );
 }
 
+export const BrandMarkIcon = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 48 48"
+    fill="none"
+    className={`icon ${props.className || ""}`}
+    aria-hidden="true"
+    {...props}
+  >
+    <path
+      d="M5 10 11 35 17 18 23 35 29 10"
+      stroke="currentColor"
+      strokeWidth="3.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="m22 10 8 25 8-25"
+      stroke="var(--highlight)"
+      strokeWidth="3.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
 export const HomeIcon = (props) => (
   <Icon {...props}>
     <path d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-8.5Z" />
@@ -66,6 +92,79 @@ export const ProfileIcon = (props) => (
   </Icon>
 );
 
+export const EyeIcon = (props) => (
+  <Icon {...props}>
+    <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" />
+    <circle cx="12" cy="12" r="2.5" />
+  </Icon>
+);
+
+export const EyeOffIcon = (props) => (
+  <Icon {...props}>
+    <path d="M3 3l18 18" />
+    <path d="M10.6 6.2A10.7 10.7 0 0 1 12 6c6 0 9.5 6 9.5 6a15 15 0 0 1-3.1 3.6" />
+    <path d="M6.2 6.2C3.9 7.7 2.5 12 2.5 12s3.5 6 9.5 6c1 0 1.9-.2 2.7-.5" />
+  </Icon>
+);
+
+export const LockIcon = (props) => (
+  <Icon {...props}>
+    <rect x="4" y="10" width="16" height="11" rx="2" />
+    <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+    <path d="M12 14v3" />
+  </Icon>
+);
+
+export const ShieldIcon = (props) => (
+  <Icon {...props}>
+    <path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z" />
+    <path d="m9 12 2 2 4-4" />
+  </Icon>
+);
+
+export const WarningIcon = (props) => (
+  <Icon {...props}>
+    <path d="m12 3 10 18H2L12 3Z" />
+    <path d="M12 9v5" />
+    <path d="M12 17h.01" />
+  </Icon>
+);
+
+export const CameraIcon = (props) => (
+  <Icon {...props}>
+    <path d="M4 7h3l1.5-2h7L17 7h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z" />
+    <circle cx="12" cy="14" r="4" />
+  </Icon>
+);
+
+export const ImageIcon = (props) => (
+  <Icon {...props}>
+    <rect x="3" y="3" width="18" height="18" rx="2" />
+    <circle cx="8.5" cy="8.5" r="1.5" />
+    <path d="m21 15-5-5L5 21" />
+  </Icon>
+);
+
+export const SettingsIcon = (props) => (
+  <Icon {...props}>
+    <circle cx="12" cy="12" r="3" />
+    <path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.7a8 8 0 0 1-1.8 1l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.8-1l-1.7.7-1.4-2.4 1.4-1.1a7 7 0 0 1 0-2l-1.4-1.1 1.4-2.4 1.7.7a8 8 0 0 1 1.8-1l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.8 1l1.7-.7 1.4 2.4-1.4 1.1a7 7 0 0 1 0 2Z" />
+  </Icon>
+);
+
+export const PlusIcon = (props) => (
+  <Icon {...props}>
+    <path d="M12 5v14" />
+    <path d="M5 12h14" />
+  </Icon>
+);
+
+export const StopIcon = (props) => (
+  <Icon {...props}>
+    <rect x="5" y="5" width="14" height="14" rx="2" />
+  </Icon>
+);
+
 export const MicIcon = (props) => (
   <Icon {...props}>
     <path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z" />
@@ -93,20 +192,32 @@ export const ReplyIcon = (props) => (
 
 export const ShareIcon = (props) => (
   <Icon {...props}>
-    <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7" />
-    <path d="M16 6l4 4-4 4" />
-    <path d="M20 10H9" />
+    <circle cx="18" cy="5" r="3" />
+    <circle cx="6" cy="12" r="3" />
+    <circle cx="18" cy="19" r="3" />
+    <path d="m8.6 10.5 6.8-4" />
+    <path d="m8.6 13.5 6.8 4" />
   </Icon>
 );
 
-export const HeartIcon = (props) => (
-  <Icon {...props} fill="var(--crimson)" stroke="var(--crimson)" strokeWidth="1.4">
+export const HeartIcon = ({
+  fill = "var(--crimson)",
+  stroke = "var(--crimson)",
+  strokeWidth = "1.4",
+  ...props
+}) => (
+  <Icon {...props} fill={fill} stroke={stroke} strokeWidth={strokeWidth}>
     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
   </Icon>
 );
 
-export const HeartOutlineIcon = (props) => (
-  <Icon {...props} fill="#fff" stroke="#111" strokeWidth="1.4">
+export const HeartOutlineIcon = ({
+  fill = "var(--ink3)",
+  stroke = "var(--ink4)",
+  strokeWidth = "1.4",
+  ...props
+}) => (
+  <Icon {...props} fill={fill} stroke={stroke} strokeWidth={strokeWidth}>
     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
   </Icon>
 );
@@ -196,25 +307,5 @@ export const EmptyBellIcon = (props) => (
   <Icon {...props}>
     <path d="M12 2a6 6 0 0 0-6 6v4s-1 2-1 3h14c0-1-1-3-1-3V8a6 6 0 0 0-6-6Z" />
     <path d="M8 22h8" />
-  </Icon>
-);
-
-export const MoonIcon = (props) => (
-  <Icon {...props}>
-    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-  </Icon>
-);
-
-export const SunIcon = (props) => (
-  <Icon {...props}>
-    <circle cx="12" cy="12" r="5" />
-    <line x1="12" y1="1" x2="12" y2="3" />
-    <line x1="12" y1="21" x2="12" y2="23" />
-    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-    <line x1="1" y1="12" x2="3" y2="12" />
-    <line x1="21" y1="12" x2="23" y2="12" />
-    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
   </Icon>
 );

@@ -1,6 +1,6 @@
 # WeVoc Frontend 🎙
 
-Premium campus voice platform UI — Twitter-style layout with warm ivory × crimson theme.
+Premium campus voice platform UI — Twitter-style layout with graphite, gray, and muted gold styling.
 
 ## Tech Stack
 - **React 18** + **Vite 5**

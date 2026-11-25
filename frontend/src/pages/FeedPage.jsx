@@ -20,9 +20,6 @@ export default function FeedPage() {
     } = useApp();
 
 
-    // =========================
-    // STATES
-    // =========================
 
     const [tab, setTab] =
         useState("trending");
@@ -49,9 +46,6 @@ export default function FeedPage() {
         useState(1);
 
 
-    // =========================
-    // FETCH VOICES
-    // =========================
 
     const fetchVoices = async (
         pageNumber = 1
@@ -110,9 +104,6 @@ export default function FeedPage() {
     };
 
 
-    // =========================
-    // FETCH FOLLOWING USERS
-    // =========================
 
     const fetchFollowing =
         async () => {
@@ -189,9 +180,6 @@ export default function FeedPage() {
         };
 
 
-    // =========================
-    // INITIAL LOAD
-    // =========================
 
     useEffect(() => {
 
@@ -200,9 +188,6 @@ export default function FeedPage() {
     }, []);
 
 
-    // =========================
-    // LOAD FOLLOWING
-    // =========================
 
     useEffect(() => {
 
@@ -215,9 +200,6 @@ export default function FeedPage() {
     }, [user?._id]);
 
 
-    // =========================
-    // SEARCH
-    // =========================
 
     const filteredVoices =
         useMemo(() => {
@@ -275,9 +257,6 @@ export default function FeedPage() {
         ]);
 
 
-    // =========================
-    // FOLLOWING VOICES
-    // =========================
 
     const followingVoices =
         useMemo(() => {
@@ -312,9 +291,6 @@ export default function FeedPage() {
         ]);
 
 
-    // =========================
-    // SORT
-    // =========================
 
     const sortedVoices =
         useMemo(() => {
@@ -322,9 +298,6 @@ export default function FeedPage() {
             let list = [];
 
 
-            // -------------------------
-            // FOLLOWING
-            // -------------------------
 
             if (
                 tab === "following"
@@ -348,9 +321,6 @@ export default function FeedPage() {
             }
 
 
-            // -------------------------
-            // RECENT
-            // -------------------------
 
             if (
                 tab === "recent"
@@ -374,9 +344,6 @@ export default function FeedPage() {
             }
 
 
-            // -------------------------
-            // TRENDING
-            // -------------------------
 
             list = [
                 ...filteredVoices
@@ -408,9 +375,6 @@ export default function FeedPage() {
         ]);
 
 
-    // =========================
-    // LIKE CHANGE
-    // =========================
 
     const handleLikeChange = (
         voiceId,
@@ -433,10 +397,8 @@ export default function FeedPage() {
                         }
 
 
-                        // --------------------------------
                         // If backend sends exact count,
                         // use it.
-                        // --------------------------------
 
                         if (
                             typeof likesCount ===
@@ -456,10 +418,7 @@ export default function FeedPage() {
                         }
 
 
-                        // --------------------------------
-                        // Fallback if backend doesn't
                         // send likesCount.
-                        // --------------------------------
 
                         const currentCount =
                             Number(
@@ -489,9 +448,6 @@ export default function FeedPage() {
     };
 
 
-    // =========================
-    // LOADING
-    // =========================
 
     if (loading) {
 
@@ -512,18 +468,13 @@ export default function FeedPage() {
     }
 
 
-    // =========================
-    // RENDER
-    // =========================
 
     return (
 
         <div className="feed-page">
 
 
-            {/* =========================
-                HEADER
-            ========================= */}
+
 
             <div className="feed-header">
 
@@ -546,14 +497,12 @@ export default function FeedPage() {
                 </div>
 
 
-                {/* =====================
-                    TABS
-                ===================== */}
+
 
                 <div className="tab-strip">
 
 
-                    {/* TRENDING */}
+
 
                     <button
                         className={`tab-strip-btn${
@@ -575,7 +524,7 @@ export default function FeedPage() {
                     </button>
 
 
-                    {/* FOLLOWING */}
+
 
                     <button
                         className={`tab-strip-btn${
@@ -595,7 +544,7 @@ export default function FeedPage() {
                     </button>
 
 
-                    {/* RECENT */}
+
 
                     <button
                         className={`tab-strip-btn${
@@ -619,9 +568,7 @@ export default function FeedPage() {
             </div>
 
 
-            {/* =========================
-                COMPOSE
-            ========================= */}
+
 
             <ComposeBox
                 onPublished={() =>
@@ -630,9 +577,7 @@ export default function FeedPage() {
             />
 
 
-            {/* =========================
-                ERROR
-            ========================= */}
+
 
             {error && (
 
@@ -654,9 +599,7 @@ export default function FeedPage() {
             )}
 
 
-            {/* =========================
-                FOLLOWING LOADING
-            ========================= */}
+
 
             {tab === "following" &&
                 followingLoading && (
@@ -671,9 +614,7 @@ export default function FeedPage() {
             }
 
 
-            {/* =========================
-                EMPTY
-            ========================= */}
+
 
             {!error &&
                 !followingLoading &&
@@ -719,9 +660,7 @@ export default function FeedPage() {
             }
 
 
-            {/* =========================
-                POSTS
-            ========================= */}
+
 
             {!error &&
                 !followingLoading &&
@@ -749,9 +688,7 @@ export default function FeedPage() {
             }
 
 
-            {/* =========================
-                PAGINATION
-            ========================= */}
+
 
             {!error &&
                 tab !== "following" &&

@@ -1,7 +1,6 @@
 import apiClient from "./apiClient";
 
 
-// Get all bookmarked voices
 export const getBookmarkedVoices = async () => {
     return apiClient("/bookmarks", {
         method: "GET",
@@ -20,7 +19,6 @@ export const toggleBookmark = async (voiceId) => {
 };
 
 
-// Check bookmark status
 export const checkBookmark = async (voiceId) => {
     return apiClient(
         `/bookmarks/${voiceId}`,

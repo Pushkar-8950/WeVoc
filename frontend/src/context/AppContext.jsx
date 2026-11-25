@@ -13,35 +13,22 @@ const Ctx = createContext(null);
 
 export function AppProvider({ children }) {
 
-    // -------------------------
-    // Navigation state
-    // -------------------------
 
     const [page, setPage] = useState("feed");
     const [pageData, setPageData] = useState(null);
     const [stack, setStack] = useState([]);
 
 
-    // -------------------------
-    // UI state
-    // -------------------------
 
     const [bookmarks, setBookmarks] = useState(["p1", "p3"]);
-    const [theme, setTheme] = useState("light");
     const [searchQuery, setSearchQuery] = useState("");
 
 
-    // -------------------------
-    // Authentication state
-    // -------------------------
 
     const [user, setUser] = useState(null);
     const [authLoading, setAuthLoading] = useState(true);
 
 
-    // -------------------------
-    // Check logged-in user
-    // -------------------------
 
     useEffect(() => {
         const checkCurrentUser = async () => {
@@ -60,9 +47,6 @@ export function AppProvider({ children }) {
     }, []);
 
 
-    // -------------------------
-    // Login
-    // -------------------------
 
     const login = async ({ identifier, email, username, password }) => {
         const response = await loginUser({
@@ -84,9 +68,6 @@ export function AppProvider({ children }) {
     };
 
 
-    // -------------------------
-    // Register
-    // -------------------------
 
     const register = async ({
         fullname,
@@ -117,9 +98,6 @@ export function AppProvider({ children }) {
     };
 
 
-    // -------------------------
-    // Logout
-    // -------------------------
 
     const logout = async () => {
         try {
@@ -136,9 +114,6 @@ export function AppProvider({ children }) {
     };
 
 
-    // -------------------------
-    // Navigation
-    // -------------------------
 
     const navigate = (nextPage, data = null) => {
 
@@ -176,9 +151,6 @@ export function AppProvider({ children }) {
     };
 
 
-    // -------------------------
-    // Bookmarks
-    // -------------------------
 
     const toggleBookmark = (id) => {
 
@@ -190,37 +162,21 @@ export function AppProvider({ children }) {
     };
 
 
-    // -------------------------
-    // Theme
-    // -------------------------
-
-    const toggleTheme = () => {
-
-        setTheme((t) =>
-            t === "light" ? "dark" : "light"
-        );
-    };
-
 
     return (
         <Ctx.Provider
             value={{
-                // Navigation
                 page,
                 pageData,
                 navigate,
                 goBack,
                 navTo,
 
-                // UI
                 bookmarks,
                 toggleBookmark,
-                theme,
-                toggleTheme,
                 searchQuery,
                 setSearchQuery,
 
-                // Authentication
                 user,
                 setUser,
                 authLoading,

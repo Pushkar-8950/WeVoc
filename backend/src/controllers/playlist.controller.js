@@ -83,7 +83,7 @@ const getPlaylistById = asyncHandler(async (req, res) => {
     if (!isValidObjectId(playlistId)) {
     throw new ApiError(400, "Invalid playlist id");
     }
-    
+
     const playlist = await Playlist.aggregate([
         {
             $match:{
@@ -149,7 +149,6 @@ const getPlaylistById = asyncHandler(async (req, res) => {
                         $project:{
                             title:1,
                             description:1,
-                            thumbnail:1,
                             duration:1,
                             voiceFile:1,
                             views:1,

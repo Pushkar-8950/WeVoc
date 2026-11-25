@@ -2,6 +2,13 @@ import { useEffect, useState } from "react";
 
 import ComposeBox from "../components/ComposeBox";
 import PostCard from "../components/PostCard";
+import {
+    CheckIcon,
+    CommunityIcon,
+    GraduationCapIcon,
+    LockIcon,
+    MicIcon,
+} from "../components/Icons";
 
 import {
     getCommunities,
@@ -38,9 +45,6 @@ export default function CommunitiesPage() {
         useState("");
 
 
-    // ========================================
-    // LOAD COMMUNITIES
-    // ========================================
 
     const loadCommunities =
         async () => {
@@ -81,9 +85,6 @@ export default function CommunitiesPage() {
         };
 
 
-    // ========================================
-    // INITIAL LOAD
-    // ========================================
 
     useEffect(() => {
 
@@ -92,9 +93,6 @@ export default function CommunitiesPage() {
     }, []);
 
 
-    // ========================================
-    // LOAD COMMUNITY VOICES
-    // ========================================
 
     const loadCommunityVoices =
         async (communityId) => {
@@ -138,9 +136,6 @@ export default function CommunitiesPage() {
         };
 
 
-    // ========================================
-    // OPEN COMMUNITY
-    // ========================================
 
     const openCommunity =
         async (community) => {
@@ -158,9 +153,6 @@ export default function CommunitiesPage() {
         };
 
 
-    // ========================================
-    // BACK
-    // ========================================
 
     const closeCommunity =
         () => {
@@ -172,9 +164,6 @@ export default function CommunitiesPage() {
         };
 
 
-    // ========================================
-    // JOIN
-    // ========================================
 
     const handleJoin =
         async (communityId) => {
@@ -258,9 +247,6 @@ export default function CommunitiesPage() {
         };
 
 
-    // ========================================
-    // LEAVE
-    // ========================================
 
     const handleLeave =
         async (communityId) => {
@@ -350,9 +336,6 @@ export default function CommunitiesPage() {
         };
 
 
-    // ========================================
-    // FILTER
-    // ========================================
 
     const shownCommunities =
         tab === "joined"
@@ -363,9 +346,6 @@ export default function CommunitiesPage() {
             : communities;
 
 
-    // ========================================
-    // LOADING
-    // ========================================
 
     if (loading) {
 
@@ -388,9 +368,6 @@ export default function CommunitiesPage() {
     }
 
 
-    // ========================================
-    // ACTIVE COMMUNITY
-    // ========================================
 
     if (active) {
 
@@ -398,9 +375,7 @@ export default function CommunitiesPage() {
 
             <div className="page-anim">
 
-                {/* ==================================
-                    HEADER
-                ================================== */}
+
 
                 <div className="feed-header">
 
@@ -440,7 +415,7 @@ export default function CommunitiesPage() {
                                     className="feed-header-title"
                                 >
 
-                                    {active.icon || "👥"}{" "}
+                                    <CommunityIcon />{" "}
 
                                     {active.name}
 
@@ -474,9 +449,7 @@ export default function CommunitiesPage() {
                         </div>
 
 
-                        {/* ==================================
-                            JOIN / LEAVE
-                        ================================== */}
+
 
                         {active.joined ? (
 
@@ -517,9 +490,7 @@ export default function CommunitiesPage() {
                 </div>
 
 
-                {/* ==================================
-                    COMMUNITY DESCRIPTION
-                ================================== */}
+
 
                 {active.description && (
 
@@ -543,9 +514,7 @@ export default function CommunitiesPage() {
                 )}
 
 
-                {/* ==================================
-                    COMPOSER
-                ================================== */}
+
 
                 {active.joined && (
 
@@ -570,9 +539,7 @@ export default function CommunitiesPage() {
                 )}
 
 
-                {/* ==================================
-                    NOT JOINED
-                ================================== */}
+
 
                 {!active.joined && (
 
@@ -584,7 +551,7 @@ export default function CommunitiesPage() {
                             className="empty-ico"
                         >
 
-                            🔒
+                            <LockIcon />
 
                         </div>
 
@@ -628,9 +595,7 @@ export default function CommunitiesPage() {
                 )}
 
 
-                {/* ==================================
-                    COMMUNITY VOICES
-                ================================== */}
+
 
                 <div
                     className="section-lbl"
@@ -664,7 +629,7 @@ export default function CommunitiesPage() {
                             className="empty-ico"
                         >
 
-                            🎙️
+                            <MicIcon />
 
                         </div>
 
@@ -716,30 +681,25 @@ export default function CommunitiesPage() {
     }
 
 
-    // ========================================
-    // COMMUNITY LIST
-    // ========================================
 
     return (
 
         <div className="page-anim">
 
-            {/* ==================================
-                HEADER
-            ================================== */}
+
 
             <div
                 className="feed-header communities-header"
             >
 
                 <div
-                    className="feed-header-inner"
+                    className="feed-header-inner page-title-header"
                 >
 
-                    <div>
+                    <div className="page-title-stack">
 
                         <div
-                            className="feed-header-title"
+                            className="page-top-title"
                         >
 
                             Communities
@@ -748,16 +708,11 @@ export default function CommunitiesPage() {
 
 
                         <div
-                            style={{
-                                fontSize: 13,
-                                color:
-                                    "var(--ink3)",
-                                marginTop: 3,
-                            }}
+                            className="page-top-subtitle"
                         >
 
-                            Find your campus
-                            communities
+                            (Find your campus or similar
+                            communities)
 
                         </div>
 
@@ -819,9 +774,7 @@ export default function CommunitiesPage() {
             </div>
 
 
-            {/* ==================================
-                ERROR
-            ================================== */}
+
 
             {error && (
 
@@ -848,9 +801,7 @@ export default function CommunitiesPage() {
             )}
 
 
-            {/* ==================================
-                EMPTY
-            ================================== */}
+
 
             {shownCommunities.length === 0 ? (
 
@@ -862,7 +813,7 @@ export default function CommunitiesPage() {
                         className="empty-ico"
                     >
 
-                        👥
+                        <CommunityIcon />
 
                     </div>
 
@@ -905,21 +856,18 @@ export default function CommunitiesPage() {
                             }
                         >
 
-                            {/* ICON */}
+
 
                             <div
                                 className="comm-icon"
                             >
 
-                                {
-                                    community.icon ||
-                                    "👥"
-                                }
+                                <CommunityIcon />
 
                             </div>
 
 
-                            {/* INFO */}
+
 
                             <div
                                 className="comm-info"
@@ -965,7 +913,7 @@ export default function CommunitiesPage() {
                                         className="comm-meta"
                                     >
 
-                                        🎓{" "}
+                                        <GraduationCapIcon />{" "}
                                         {
                                             community.college
                                         }
@@ -1009,7 +957,7 @@ export default function CommunitiesPage() {
                             </div>
 
 
-                            {/* JOIN */}
+
 
                             <button
                                 type="button"
@@ -1046,7 +994,7 @@ export default function CommunitiesPage() {
 
                                 {
                                     community.joined
-                                        ? "✓ Joined"
+                                        ? <><CheckIcon /> Joined</>
                                         : "Join"
                                 }
 

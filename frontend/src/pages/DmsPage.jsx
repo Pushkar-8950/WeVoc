@@ -11,7 +11,12 @@ import {
     LiveBars,
 } from "../components/Waveform";
 
-import { SearchIcon } from "../components/Icons";
+import {
+    MessageIcon,
+    MicIcon,
+    SearchIcon,
+    StopIcon,
+} from "../components/Icons";
 
 import {
     getConversations,
@@ -31,9 +36,6 @@ import { timeAgo } from "../utils/helpers";
 import { useApp } from "../context/AppContext";
 
 
-// =====================================================
-// DMS PAGE
-// =====================================================
 
 export default function DmsPage() {
 
@@ -60,9 +62,6 @@ export default function DmsPage() {
         useRef(null);
 
 
-    // =====================================================
-    // KEEP ACTIVE CHAT REF UPDATED
-    // =====================================================
 
     useEffect(() => {
 
@@ -72,9 +71,6 @@ export default function DmsPage() {
     }, [active]);
 
 
-    // =====================================================
-    // LOAD CONVERSATIONS
-    // =====================================================
 
     useEffect(() => {
 
@@ -113,9 +109,6 @@ export default function DmsPage() {
     }, []);
 
 
-    // =====================================================
-    // OPEN DIRECT CHAT FROM PROFILE
-    // =====================================================
 
     useEffect(() => {
 
@@ -184,7 +177,6 @@ export default function DmsPage() {
                     }
 
 
-                    // Open chat
 
                     setActive({
 
@@ -197,7 +189,6 @@ export default function DmsPage() {
                     });
 
 
-                    // Mark messages read
 
                     try {
 
@@ -215,7 +206,6 @@ export default function DmsPage() {
                     }
 
 
-                    // Clear unread count
                     // if conversation exists
 
                     setThreads(
@@ -257,9 +247,6 @@ export default function DmsPage() {
     ]);
 
 
-    // =====================================================
-    // SOCKET CONNECTION
-    // =====================================================
 
     useEffect(() => {
 
@@ -271,9 +258,6 @@ export default function DmsPage() {
         connectSocket();
 
 
-        // =================================================
-        // NEW MESSAGE
-        // =================================================
 
         const handleNewMessage =
             (message) => {
@@ -315,7 +299,6 @@ export default function DmsPage() {
                 }
 
 
-                // Current user must be involved
 
                 if (
                     senderIdString !==
@@ -327,7 +310,6 @@ export default function DmsPage() {
                 }
 
 
-                // We only process
                 // incoming socket messages
 
                 if (
@@ -348,9 +330,6 @@ export default function DmsPage() {
                         ?.toString();
 
 
-                // =================================================
-                // ACTIVE CHAT
-                // =================================================
 
                 if (
                     activeUserId &&
@@ -439,9 +418,6 @@ export default function DmsPage() {
                 }
 
 
-                // =================================================
-                // MESSAGE FROM OTHER USER
-                // =================================================
 
                 const incomingUser =
                     message.sender;
@@ -471,9 +447,6 @@ export default function DmsPage() {
                             );
 
 
-                        // =================================================
-                        // NEW CONVERSATION
-                        // =================================================
 
                         if (
                             existingIndex === -1
@@ -519,9 +492,6 @@ export default function DmsPage() {
                         }
 
 
-                        // =================================================
-                        // UPDATE EXISTING
-                        // =================================================
 
                         const updated =
                             [
@@ -590,9 +560,6 @@ export default function DmsPage() {
             };
 
 
-        // =================================================
-        // MESSAGES READ
-        // =================================================
 
         const handleMessagesRead =
             ({ userId }) => {
@@ -659,9 +626,6 @@ export default function DmsPage() {
     ]);
 
 
-    // =====================================================
-    // SEARCH
-    // =====================================================
 
     const shownThreads =
         threads.filter(
@@ -692,9 +656,6 @@ export default function DmsPage() {
         );
 
 
-    // =====================================================
-    // OPEN EXISTING CHAT
-    // =====================================================
 
     const openChat =
         async (thread) => {
@@ -782,9 +743,6 @@ export default function DmsPage() {
         };
 
 
-    // =====================================================
-    // LOADING
-    // =====================================================
 
     if (loading) {
 
@@ -793,6 +751,14 @@ export default function DmsPage() {
             <div className="page-anim">
 
                 <div className="feed-header dm-header">
+
+                    <div className="feed-header-inner page-title-header">
+                        <div className="page-title-stack">
+                            <div className="page-top-title">
+                                Messages
+                            </div>
+                        </div>
+                    </div>
 
                     <div className="feed-header-inner">
 
@@ -837,9 +803,6 @@ export default function DmsPage() {
     }
 
 
-    // =====================================================
-    // ACTIVE CHAT
-    // =====================================================
 
     if (active) {
 
@@ -870,15 +833,20 @@ export default function DmsPage() {
     }
 
 
-    // =====================================================
-    // DM LIST
-    // =====================================================
 
     return (
 
         <div className="page-anim">
 
             <div className="feed-header dm-header">
+
+                <div className="feed-header-inner page-title-header">
+                    <div className="page-title-stack">
+                        <div className="page-top-title">
+                            Messages
+                        </div>
+                    </div>
+                </div>
 
                 <div className="feed-header-inner">
 
@@ -911,7 +879,7 @@ export default function DmsPage() {
                 <div className="empty-state">
 
                     <div className="empty-ico">
-                        💬
+                        <MessageIcon />
                     </div>
 
                     <div className="empty-title">
@@ -921,7 +889,7 @@ export default function DmsPage() {
                     <div className="empty-sub">
 
                         Open someone's profile and
-                        press <b>💬 Message</b> to
+                        press <b><MessageIcon /> Message</b> to
                         start a conversation.
 
                     </div>
@@ -980,7 +948,7 @@ export default function DmsPage() {
                                     </div>
 
                                     <div className="dm-preview">
-                                        🎙 Voice message
+                                        <MicIcon /> Voice message
                                     </div>
 
                                 </div>
@@ -1038,9 +1006,6 @@ export default function DmsPage() {
 }
 
 
-// =====================================================
-// CHAT VIEW
-// =====================================================
 
 function ChatView({
     currentUser,
@@ -1073,9 +1038,6 @@ function ChatView({
         useRef([]);
 
 
-    // =====================================================
-    // SYNC INITIAL MESSAGES
-    // =====================================================
 
     useEffect(() => {
 
@@ -1086,9 +1048,6 @@ function ChatView({
     }, [initialMessages]);
 
 
-    // =====================================================
-    // RECORD VOICE
-    // =====================================================
 
     const startRecording = async () => {
 
@@ -1184,9 +1143,6 @@ function ChatView({
     };
 
 
-    // =====================================================
-    // STOP RECORDING
-    // =====================================================
 
     const stopRecording = () => {
 
@@ -1205,9 +1161,6 @@ function ChatView({
     };
 
 
-    // =====================================================
-    // CANCEL RECORDING
-    // =====================================================
 
     const cancelRecording = () => {
 
@@ -1228,9 +1181,6 @@ function ChatView({
     };
 
 
-    // =====================================================
-    // SEND VOICE
-    // =====================================================
 
     const handleSend = async () => {
 
@@ -1306,9 +1256,6 @@ function ChatView({
     };
 
 
-    // =====================================================
-    // FORMAT DURATION
-    // =====================================================
 
     const formatDuration =
         (seconds) => {
@@ -1339,9 +1286,6 @@ function ChatView({
         };
 
 
-    // =====================================================
-    // CHAT UI
-    // =====================================================
 
     return (
 
@@ -1354,7 +1298,7 @@ function ChatView({
             }}
         >
 
-            {/* HEADER */}
+
 
             <div className="feed-header dm-header">
 
@@ -1419,7 +1363,7 @@ function ChatView({
             </div>
 
 
-            {/* MESSAGES */}
+
 
             <div
                 style={{
@@ -1439,7 +1383,7 @@ function ChatView({
                     >
 
                         <div className="empty-ico">
-                            🎙
+                            <MicIcon />
                         </div>
 
                         <div className="empty-title">
@@ -1553,7 +1497,7 @@ function ChatView({
             </div>
 
 
-            {/* RECORDER */}
+
 
             <div
                 style={{
@@ -1601,7 +1545,7 @@ function ChatView({
                                 startRecording
                             }
                         >
-                            🎙 Record
+                            <MicIcon /> Record
                         </button>
 
                     ) : (
@@ -1613,7 +1557,7 @@ function ChatView({
                                 stopRecording
                             }
                         >
-                            ⏹ Stop
+                            <StopIcon /> Stop
                         </button>
 
                     )}
@@ -1653,7 +1597,7 @@ function ChatView({
                             >
                                 {sending
                                     ? "Sending..."
-                                    : "Send 🎙"
+                                    : <>Send <MicIcon /></>
                                 }
                             </button>
 

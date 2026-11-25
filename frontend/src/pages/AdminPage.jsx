@@ -12,6 +12,13 @@ import {
 } from "../api/admin.api";
 
 import { useApp } from "../context/AppContext";
+import {
+    LockIcon,
+    MicIcon,
+    ShieldIcon,
+    UsersIcon,
+    WarningIcon,
+} from "../components/Icons";
 
 
 export default function AdminPage() {
@@ -40,16 +47,13 @@ export default function AdminPage() {
     const [voiceSearch, setVoiceSearch] = useState("");
 
 
-    // =====================================
-    // ADMIN PROTECTION
-    // =====================================
 
     if (user?.role !== "admin") {
         return (
             <div className="admin-denied">
 
                 <div className="admin-denied-icon">
-                    🔒
+                    <LockIcon />
                 </div>
 
                 <h2>
@@ -73,9 +77,6 @@ export default function AdminPage() {
     }
 
 
-    // =====================================
-    // DASHBOARD
-    // =====================================
 
     const loadDashboard = async () => {
 
@@ -104,9 +105,6 @@ export default function AdminPage() {
     };
 
 
-    // =====================================
-    // USERS
-    // =====================================
 
     const loadUsers = async (search = "") => {
 
@@ -141,9 +139,6 @@ export default function AdminPage() {
     };
 
 
-    // =====================================
-    // VOICES
-    // =====================================
 
     const loadVoices = async (search = "") => {
 
@@ -178,9 +173,6 @@ export default function AdminPage() {
     };
 
 
-    // =====================================
-    // LOAD SECTION
-    // =====================================
 
     useEffect(() => {
 
@@ -199,9 +191,6 @@ export default function AdminPage() {
     }, [active]);
 
 
-    // =====================================
-    // USER DETAILS
-    // =====================================
 
     const handleUserClick = async (userId) => {
 
@@ -232,9 +221,6 @@ export default function AdminPage() {
     };
 
 
-    // =====================================
-    // DELETE USER
-    // =====================================
 
     const handleDeleteUser = async (userId) => {
 
@@ -272,9 +258,6 @@ export default function AdminPage() {
     };
 
 
-    // =====================================
-    // DELETE VOICE
-    // =====================================
 
     const handleDeleteVoice = async (voiceId) => {
 
@@ -308,9 +291,6 @@ export default function AdminPage() {
     };
 
 
-    // =====================================
-    // LOGOUT
-    // =====================================
 
     const handleLogout = async () => {
 
@@ -323,9 +303,6 @@ export default function AdminPage() {
     };
 
 
-    // =====================================
-    // BACK BUTTON STYLE
-    // =====================================
 
     const backButtonStyle = {
         display: "inline-flex",
@@ -335,10 +312,10 @@ export default function AdminPage() {
         padding: "10px 15px",
         minHeight: "40px",
 
-        background: "#ffffff",
-        color: "#c0392b",
+        background: "#8B8D91",
+        color: "#111214",
 
-        border: "1px solid #c0392b",
+        border: "1px solid #7D7F83",
         borderRadius: "10px",
 
         fontSize: "13px",
@@ -355,16 +332,13 @@ export default function AdminPage() {
         whiteSpace: "nowrap",
 
         boxShadow:
-            "0 4px 14px rgba(192,57,43,0.12)",
+            "0 4px 14px rgba(0,0,0,0.12)",
 
         transition:
             "all 0.22s ease",
     };
 
 
-    // =====================================
-    // USER DETAILS PAGE
-    // =====================================
 
     if (selectedUser) {
 
@@ -396,7 +370,7 @@ export default function AdminPage() {
                     }}
                 >
 
-                    {/* HEADER */}
+
 
                     <header className="admin-header">
 
@@ -423,7 +397,7 @@ export default function AdminPage() {
                             }}
                         >
 
-                            {/* BACK TO WEVOC */}
+
 
                             <button
                                 type="button"
@@ -433,29 +407,27 @@ export default function AdminPage() {
                                 }
                                 onMouseEnter={(e) => {
                                     e.currentTarget.style.background =
-                                        "#c0392b";
+                                        "var(--crimson)";
 
-                                    e.currentTarget.style.color =
-                                        "#ffffff";
+                                    e.currentTarget.style.color ="var(--accent-ink)";
 
                                     e.currentTarget.style.transform =
                                         "translateX(-3px)";
 
                                     e.currentTarget.style.boxShadow =
-                                        "0 8px 22px rgba(192,57,43,0.25)";
+                                        "0 8px 22px rgba(0,0,0,0.18)";
                                 }}
                                 onMouseLeave={(e) => {
                                     e.currentTarget.style.background =
-                                        "#ffffff";
+                                        "#8B8D91";
 
-                                    e.currentTarget.style.color =
-                                        "#c0392b";
+                                    e.currentTarget.style.color ="#111214";
 
                                     e.currentTarget.style.transform =
                                         "translateX(0)";
 
                                     e.currentTarget.style.boxShadow =
-                                        "0 4px 14px rgba(192,57,43,0.12)";
+                                        "0 4px 14px rgba(0,0,0,0.12)";
                                 }}
                             >
                                 ← Back to WeVoc
@@ -501,11 +473,11 @@ export default function AdminPage() {
                     </header>
 
 
-                    {/* CONTENT */}
+
 
                     <div className="admin-content">
 
-                        {/* BACK TO USERS */}
+
 
                         <button
                             type="button"
@@ -518,29 +490,27 @@ export default function AdminPage() {
                             }
                             onMouseEnter={(e) => {
                                 e.currentTarget.style.background =
-                                    "#c0392b";
+                                    "var(--crimson)";
 
-                                e.currentTarget.style.color =
-                                    "#ffffff";
+                                e.currentTarget.style.color ="var(--accent-ink)";
 
                                 e.currentTarget.style.transform =
                                     "translateX(-3px)";
 
                                 e.currentTarget.style.boxShadow =
-                                    "0 8px 22px rgba(192,57,43,0.25)";
+                                    "0 8px 22px rgba(0,0,0,0.18)";
                             }}
                             onMouseLeave={(e) => {
                                 e.currentTarget.style.background =
-                                    "#ffffff";
+                                    "#8B8D91";
 
-                                e.currentTarget.style.color =
-                                    "#c0392b";
+                                e.currentTarget.style.color ="#111214";
 
                                 e.currentTarget.style.transform =
                                     "translateX(0)";
 
                                 e.currentTarget.style.boxShadow =
-                                    "0 4px 14px rgba(192,57,43,0.12)";
+                                    "0 4px 14px rgba(0,0,0,0.12)";
                             }}
                         >
                             ← Back to Users
@@ -571,9 +541,6 @@ export default function AdminPage() {
     }
 
 
-    // =====================================
-    // NORMAL ADMIN PANEL
-    // =====================================
 
     return (
 
@@ -601,9 +568,7 @@ export default function AdminPage() {
                 }}
             >
 
-                {/* =========================
-                    HEADER
-                ========================= */}
+
 
                 <header className="admin-header">
 
@@ -642,9 +607,7 @@ export default function AdminPage() {
                         }}
                     >
 
-                        {/* =========================
-                            BACK TO WEVOC
-                        ========================= */}
+
 
                         <button
                             type="button"
@@ -654,29 +617,27 @@ export default function AdminPage() {
                             }
                             onMouseEnter={(e) => {
                                 e.currentTarget.style.background =
-                                    "#c0392b";
+                                    "var(--crimson)";
 
-                                e.currentTarget.style.color =
-                                    "#ffffff";
+                                e.currentTarget.style.color ="var(--accent-ink)";
 
                                 e.currentTarget.style.transform =
                                     "translateX(-3px)";
 
                                 e.currentTarget.style.boxShadow =
-                                    "0 8px 22px rgba(192,57,43,0.25)";
+                                    "0 8px 22px rgba(0,0,0,0.18)";
                             }}
                             onMouseLeave={(e) => {
                                 e.currentTarget.style.background =
-                                    "#ffffff";
+                                    "#8B8D91";
 
-                                e.currentTarget.style.color =
-                                    "#c0392b";
+                                e.currentTarget.style.color ="#111214";
 
                                 e.currentTarget.style.transform =
                                     "translateX(0)";
 
                                 e.currentTarget.style.boxShadow =
-                                    "0 4px 14px rgba(192,57,43,0.12)";
+                                    "0 4px 14px rgba(0,0,0,0.12)";
                             }}
                         >
                             ← Back to WeVoc
@@ -722,9 +683,7 @@ export default function AdminPage() {
                 </header>
 
 
-                {/* =========================
-                    ERROR
-                ========================= */}
+
 
                 {error && (
 
@@ -735,9 +694,7 @@ export default function AdminPage() {
                 )}
 
 
-                {/* =========================
-                    CONTENT
-                ========================= */}
+
 
                 {loading ? (
 
@@ -809,7 +766,7 @@ export default function AdminPage() {
                             <div className="admin-empty">
 
                                 <div>
-                                    🚧
+                                    <WarningIcon />
                                 </div>
 
                                 <h3>
@@ -836,9 +793,6 @@ export default function AdminPage() {
 }
 
 
-// =====================================
-// USER DETAILS
-// =====================================
 
 function UserDetails({
     user,
@@ -1045,9 +999,6 @@ function UserDetails({
 }
 
 
-// =====================================
-// DASHBOARD
-// =====================================
 
 function Dashboard({
     data
@@ -1081,7 +1032,7 @@ function Dashboard({
             <div className="admin-stats">
 
                 <StatCard
-                    icon="👥"
+                    icon={UsersIcon}
                     label="Total Users"
                     value={
                         stats.totalUsers ?? 0
@@ -1089,7 +1040,7 @@ function Dashboard({
                 />
 
                 <StatCard
-                    icon="🎙️"
+                    icon={MicIcon}
                     label="Total Voices"
                     value={
                         stats.totalVoices ?? 0
@@ -1097,7 +1048,7 @@ function Dashboard({
                 />
 
                 <StatCard
-                    icon="🛡️"
+                    icon={ShieldIcon}
                     label="Admin Status"
                     value="Active"
                 />
@@ -1188,7 +1139,7 @@ function Dashboard({
                                 >
 
                                     <div className="admin-voice-icon">
-                                        🎙️
+                                        <MicIcon />
                                     </div>
 
                                     <div className="admin-row-info">
@@ -1226,22 +1177,20 @@ function Dashboard({
 }
 
 
-// =====================================
-// STAT CARD
-// =====================================
 
 function StatCard({
     icon,
     label,
     value
 }) {
+    const IconComponent = icon;
 
     return (
 
         <div className="admin-stat-card">
 
             <div className="admin-stat-icon">
-                {icon}
+                <IconComponent />
             </div>
 
             <div>
@@ -1261,9 +1210,6 @@ function StatCard({
 }
 
 
-// =====================================
-// USERS
-// =====================================
 
 function UsersSection({
     users,
@@ -1456,9 +1402,6 @@ function UsersSection({
 }
 
 
-// =====================================
-// VOICES
-// =====================================
 
 function VoicesSection({
     voices,
@@ -1526,7 +1469,7 @@ function VoicesSection({
                     <div className="admin-empty">
 
                         <div>
-                            🎙️
+                            <MicIcon />
                         </div>
 
                         <h3>
@@ -1544,25 +1487,9 @@ function VoicesSection({
                             key={voice._id}
                         >
 
-                            {voice.thumbnail ? (
-
-                                <img
-                                    src={
-                                        voice.thumbnail
-                                    }
-                                    alt={
-                                        voice.title
-                                    }
-                                    className="admin-voice-thumb"
-                                />
-
-                            ) : (
-
-                                <div className="admin-voice-thumb admin-thumb-empty">
-                                    🎙️
-                                </div>
-
-                            )}
+                            <div className="admin-voice-audio-mark">
+                                <MicIcon />
+                            </div>
 
 
                             <div className="admin-voice-details">
