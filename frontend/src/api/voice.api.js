@@ -54,6 +54,20 @@ export const getAllVoices = async (
 export const getVoices = getAllVoices;
 
 
+export const getPopularVoices = async (
+    page = 1,
+    limit = 20
+) => {
+
+    return apiClient(
+        `/feed/trending?page=${page}&limit=${limit}`,
+        {
+            method: "GET",
+        }
+    );
+};
+
+
 
 export const getCommunityVoices = async (
     communityId

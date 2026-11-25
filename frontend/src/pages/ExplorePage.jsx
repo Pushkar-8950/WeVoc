@@ -1,6 +1,8 @@
+import "./ExplorePage.css";
 import { useEffect, useState } from "react";
 
 import {
+    FlameIcon,
     MicIcon,
     ProfileIcon,
     SearchIcon,
@@ -14,7 +16,9 @@ import {
     searchUsers,
     searchVoices,
 } from "../api/search.api";
+import { getPopularVoices } from "../api/voice.api";
 
+const POPULAR_PAGE_SIZE = 20;
 
 export default function ExplorePage() {
 
@@ -32,11 +36,95 @@ export default function ExplorePage() {
     const [voices, setVoices] =
         useState([]);
 
+    const [popularVoices, setPopularVoices] =
+        useState([]);
+
+    const [popularLoading, setPopularLoading] =
+        useState(true);
+
+    const [popularLoadingMore, setPopularLoadingMore] =
+        useState(false);
+
+    const [popularError, setPopularError] =
+        useState("");
+
+    const [popularPage, setPopularPage] =
+        useState(1);
+
+    const [hasMorePopular, setHasMorePopular] =
+        useState(false);
+
     const [loading, setLoading] =
         useState(false);
 
     const [error, setError] =
         useState("");
+
+
+
+    const loadPopularVoices = async (
+        page = 1,
+        append = false
+    ) => {
+
+        try {
+
+            if (append) {
+                setPopularLoadingMore(true);
+            } else {
+                setPopularLoading(true);
+            }
+
+            setPopularError("");
+
+            const response =
+                await getPopularVoices(
+                    page,
+                    POPULAR_PAGE_SIZE
+                );
+
+            const nextVoices =
+                response?.data || [];
+
+            setPopularVoices(
+                current =>
+                    append
+                        ? [...current, ...nextVoices]
+                        : nextVoices
+            );
+
+            setPopularPage(page);
+            setHasMorePopular(
+                nextVoices.length === POPULAR_PAGE_SIZE
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Popular voices error:",
+                error
+            );
+
+            setPopularError(
+                error?.message ||
+                "Failed to load popular posts."
+            );
+
+        } finally {
+
+            setPopularLoading(false);
+            setPopularLoadingMore(false);
+
+        }
+
+    };
+
+
+    useEffect(() => {
+
+        loadPopularVoices();
+
+    }, []);
 
 
 
@@ -132,26 +220,21 @@ export default function ExplorePage() {
         likesCount
     ) => {
 
-        setVoices(
+        const updateVoiceLikes =
             currentVoices =>
-
                 currentVoices.map(
                     voice => {
 
                         if (
                             voice._id !== voiceId
                         ) {
-
                             return voice;
-
                         }
-
 
                         if (
                             typeof likesCount ===
                             "number"
                         ) {
-
                             return {
                                 ...voice,
                                 isLiked: liked,
@@ -161,22 +244,16 @@ export default function ExplorePage() {
                                         likesCount
                                     ),
                             };
-
                         }
-
 
                         const currentCount =
                             Number(
                                 voice.likesCount || 0
                             );
 
-
                         return {
                             ...voice,
-
-                            isLiked:
-                                liked,
-
+                            isLiked: liked,
                             likesCount:
                                 liked
                                     ? currentCount + 1
@@ -187,7 +264,23 @@ export default function ExplorePage() {
                         };
 
                     }
-                )
+                );
+
+        setVoices(updateVoiceLikes);
+        setPopularVoices(current =>
+            updateVoiceLikes(current).sort(
+                (a, b) =>
+                    (
+                        (Number(b.likesCount) * 3) +
+                        Number(b.views || 0)
+                    ) -
+                    (
+                        (Number(a.likesCount) * 3) +
+                        Number(a.views || 0)
+                    ) ||
+                    new Date(b.createdAt) -
+                    new Date(a.createdAt)
+            )
         );
 
     };
@@ -268,36 +361,94 @@ export default function ExplorePage() {
 
 
 
-            {!search.trim() &&
-                !loading && (
+            {!search.trim() && (
 
-                    <div className="empty-state">
+                <div className="explore-popular">
 
-                        <div className="empty-ico">
-
-                            <SearchIcon />
-
-                        </div>
-
-
-                        <div className="empty-title">
-
-                            Search WeVoc
-
-                        </div>
-
-
-                        <div className="empty-sub">
-
-                            Search for users,
-                            voices and campus
-                            conversations.
-
-                        </div>
-
+                    <div className="section-lbl">
+                        <FlameIcon /> Popular posts
                     </div>
 
-                )}
+                    {popularError && (
+
+                        <div className="auth-error">
+                            {popularError}
+                            <button
+                                type="button"
+                                className="btn btn-ghost btn-sm"
+                                onClick={() =>
+                                    loadPopularVoices(1)
+                                }
+                            >
+                                Retry
+                            </button>
+                        </div>
+
+                    )}
+
+                    {popularLoading ? (
+
+                        <div className="feed-loading">
+                            Loading popular posts...
+                        </div>
+
+                    ) : popularVoices.length > 0 ? (
+
+                        <>
+
+                            {popularVoices.map(
+                                (voice, index) => (
+                                    <PostCard
+                                        key={voice._id}
+                                        post={voice}
+                                        onLikeChange={handleLikeChange}
+                                        style={{
+                                            animationDelay:
+                                                `${(index % POPULAR_PAGE_SIZE) * 0.05}s`,
+                                        }}
+                                    />
+                                )
+                            )}
+
+                            {hasMorePopular && (
+                                <button
+                                    type="button"
+                                    className="btn btn-ghost explore-load-more"
+                                    disabled={popularLoadingMore}
+                                    onClick={() =>
+                                        loadPopularVoices(
+                                            popularPage + 1,
+                                            true
+                                        )
+                                    }
+                                >
+                                    {popularLoadingMore
+                                        ? "Loading..."
+                                        : "Load more"}
+                                </button>
+                            )}
+
+                        </>
+
+                    ) : !popularError ? (
+
+                        <div className="empty-state">
+                            <div className="empty-ico">
+                                <FlameIcon />
+                            </div>
+                            <div className="empty-title">
+                                No popular posts yet
+                            </div>
+                            <div className="empty-sub">
+                                New posts will appear here as people engage with them.
+                            </div>
+                        </div>
+
+                    ) : null}
+
+                </div>
+
+            )}
 
 
 

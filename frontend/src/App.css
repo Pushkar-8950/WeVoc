@@ -1,0 +1,40 @@
+
+
+
+.app-shell {
+  display: flex;
+  max-width: 1260px;
+  margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+}
+
+
+.main-feed {
+  flex: 1;
+  min-width: 0;
+  max-width: var(--feed-max);
+  border-right: 1px solid var(--bg4);
+  border-left: 1px solid var(--bg4);
+  overflow-x: hidden;
+  padding: 0 12px;
+  box-sizing: border-box;
+}
+
+
+
+
+.auth-loading {
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--bg);
+  color: var(--ink3);
+
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+}

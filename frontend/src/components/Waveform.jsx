@@ -1,3 +1,4 @@
+import "./Waveform.css";
 import { useMemo } from "react";
 
 export function Waveform({ playing = false, bars = 30 }) {

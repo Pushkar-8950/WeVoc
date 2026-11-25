@@ -1,3 +1,4 @@
+import "./NotificationsPage.css";
 import { useEffect, useState } from "react";
 
 import {
@@ -183,7 +184,7 @@ export default function NotificationsPage() {
 
     const handleMarkAll = async () => {
 
-        if (unreadCount === 0) {
+        if (notifs.length === 0) {
             return;
         }
 
@@ -275,7 +276,7 @@ export default function NotificationsPage() {
 
 
 
-            <div className="feed-header">
+            <div className="feed-header notifications-header">
                 <div className="feed-header-inner page-title-header">
                     <div className="page-title-stack">
                         <h1 className="page-top-title notif-page-title">
@@ -336,28 +337,13 @@ export default function NotificationsPage() {
 
             <div className="notif-toolbar">
 
-                <span className="notif-summary">
-
-                    {unreadCount > 0
-
-                        ? `${unreadCount} unread notification${
-                            unreadCount === 1
-                                ? ""
-                                : "s"
-                        }`
-
-                        : "No unread notifications"}
-
-                </span>
-
-
                 <button
                     className="btn btn-ghost btn-sm"
                     onClick={
                         handleMarkAll
                     }
                     disabled={
-                        unreadCount === 0
+                        notifs.length === 0
                     }
                 >
                     Mark all read

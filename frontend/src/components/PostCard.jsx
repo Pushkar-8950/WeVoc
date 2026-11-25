@@ -1,3 +1,4 @@
+import "./PostCard.css";
 import { useEffect, useState } from "react";
 
 import Avatar from "./Avatar";
@@ -1100,15 +1101,10 @@ export default function PostCard({
                     </div>
 
 
-                    <button
-                        type="button"
-                        className="post-more-btn"
-                        onClick={(e) =>
-                            e.stopPropagation()
-                        }
-                    >
-                        ···
-                    </button>
+                    <div className="score-badge">
+                        <FlameIcon />
+                        {score}
+                    </div>
 
                 </div>
 
@@ -1330,14 +1326,6 @@ export default function PostCard({
 
 
 
-
-                    <div className="score-badge">
-
-                        <FlameIcon />
-
-                        {score}
-
-                    </div>
 
                 </div>
 

@@ -1,4 +1,6 @@
+import "./CommunitiesPage.css";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 import ComposeBox from "../components/ComposeBox";
 import PostCard from "../components/PostCard";
@@ -8,9 +10,11 @@ import {
     GraduationCapIcon,
     LockIcon,
     MicIcon,
+    PlusIcon,
 } from "../components/Icons";
 
 import {
+    createCommunity,
     getCommunities,
     joinCommunity,
     leaveCommunity,
@@ -19,6 +23,12 @@ import {
 import {
     getCommunityVoices,
 } from "../api/voice.api";
+
+const EMPTY_COMMUNITY_FORM = {
+    name: "",
+    description: "",
+    college: "",
+};
 
 
 export default function CommunitiesPage() {
@@ -31,6 +41,21 @@ export default function CommunitiesPage() {
 
     const [active, setActive] =
         useState(null);
+
+    const [composerOpen, setComposerOpen] =
+        useState(false);
+
+    const [createOpen, setCreateOpen] =
+        useState(false);
+
+    const [creating, setCreating] =
+        useState(false);
+
+    const [createError, setCreateError] =
+        useState("");
+
+    const [communityForm, setCommunityForm] =
+        useState(EMPTY_COMMUNITY_FORM);
 
     const [communityVoices, setCommunityVoices] =
         useState([]);
@@ -140,6 +165,7 @@ export default function CommunitiesPage() {
     const openCommunity =
         async (community) => {
 
+            setComposerOpen(false);
             setActive(
                 community
             );
@@ -157,11 +183,82 @@ export default function CommunitiesPage() {
     const closeCommunity =
         () => {
 
+            setComposerOpen(false);
             setActive(null);
 
             setCommunityVoices([]);
 
         };
+
+
+    const closeCreateModal = () => {
+
+        if (creating) {
+            return;
+        }
+
+        setCreateOpen(false);
+        setCreateError("");
+        setCommunityForm(EMPTY_COMMUNITY_FORM);
+
+    };
+
+
+    const handleCreateCommunity = async (event) => {
+
+        event.preventDefault();
+        setCreateError("");
+
+        try {
+
+            setCreating(true);
+
+            const response = await createCommunity(
+                communityForm
+            );
+
+            if (!response?.data?._id) {
+                throw new Error(
+                    "The server did not return the created community."
+                );
+            }
+
+            const createdCommunity = {
+                ...response.data,
+                joined: true,
+            };
+
+            setCommunities(current => [
+                createdCommunity,
+                ...current.filter(
+                    community =>
+                        community._id !== createdCommunity._id
+                ),
+            ]);
+
+            setTab("joined");
+            setCreateOpen(false);
+            setCommunityForm(EMPTY_COMMUNITY_FORM);
+
+        } catch (error) {
+
+            console.error(
+                "Create community error:",
+                error
+            );
+
+            setCreateError(
+                error?.message ||
+                "Unable to create community."
+            );
+
+        } finally {
+
+            setCreating(false);
+
+        }
+
+    };
 
 
 
@@ -492,55 +589,6 @@ export default function CommunitiesPage() {
 
 
 
-                {active.description && (
-
-                    <div
-                        style={{
-                            padding:
-                                "16px 20px",
-                            color:
-                                "var(--ink3)",
-                            fontSize:
-                                14,
-                            lineHeight:
-                                1.6,
-                        }}
-                    >
-
-                        {active.description}
-
-                    </div>
-
-                )}
-
-
-
-
-                {active.joined && (
-
-                    <ComposeBox
-
-                        communityId={
-                            active._id
-                        }
-
-                        onPublished={
-                            async () => {
-
-                                await loadCommunityVoices(
-                                    active._id
-                                );
-
-                            }
-                        }
-
-                    />
-
-                )}
-
-
-
-
                 {!active.joined && (
 
                     <div
@@ -596,6 +644,39 @@ export default function CommunitiesPage() {
 
 
 
+                {active.joined && (
+
+                    <div className="community-detail-actions">
+                        <button
+                            type="button"
+                            className="btn btn-primary"
+                            aria-expanded={composerOpen}
+                            onClick={() =>
+                                setComposerOpen(open => !open)
+                            }
+                        >
+                            <PlusIcon />
+                            {composerOpen ? "Close composer" : "Add post"}
+                        </button>
+                    </div>
+
+                )}
+
+
+                {active.joined && composerOpen && (
+
+                    <div className="community-compose">
+                        <ComposeBox
+                            communityId={active._id}
+                            onPublished={() =>
+                                loadCommunityVoices(active._id)
+                            }
+                        />
+                    </div>
+
+                )}
+
+
 
                 <div
                     className="section-lbl"
@@ -603,10 +684,9 @@ export default function CommunitiesPage() {
                         marginTop: 20,
                     }}
                 >
-
                     Community Voices
-
                 </div>
+
 
 
                 {voicesLoading ? (
@@ -722,7 +802,7 @@ export default function CommunitiesPage() {
 
 
                 <div
-                    className="tab-strip page-tab-strip"
+                    className="tab-strip communities-tabs"
                 >
 
                     <button
@@ -1005,6 +1085,136 @@ export default function CommunitiesPage() {
                     )
                 )
 
+            )}
+
+
+            {createPortal(
+                <>
+                    <button
+                        type="button"
+                        className="community-create-fab"
+                        aria-haspopup="dialog"
+                        aria-expanded={createOpen}
+                        onClick={() => {
+                            setCreateError("");
+                            setCreateOpen(true);
+                        }}
+                    >
+                        <PlusIcon />
+                        Create community
+                    </button>
+
+                    {createOpen && (
+                        <div
+                            className="community-modal-backdrop"
+                            onMouseDown={event => {
+                                if (event.target === event.currentTarget) {
+                                    closeCreateModal();
+                                }
+                            }}
+                        >
+                            <section
+                                className="community-create-modal"
+                                role="dialog"
+                                aria-modal="true"
+                                aria-labelledby="community-create-title"
+                            >
+                                <div className="community-modal-header">
+                                    <h2 id="community-create-title">
+                                        Create a community
+                                    </h2>
+                                    <button
+                                        type="button"
+                                        className="community-modal-close"
+                                        aria-label="Close create community dialog"
+                                        disabled={creating}
+                                        onClick={closeCreateModal}
+                                    >
+                                        ×
+                                    </button>
+                                </div>
+
+                                <form onSubmit={handleCreateCommunity}>
+                                    <label className="community-create-field">
+                                        Community name
+                                        <input
+                                            name="name"
+                                            value={communityForm.name}
+                                            onChange={event =>
+                                                setCommunityForm(current => ({
+                                                    ...current,
+                                                    name: event.target.value,
+                                                }))
+                                            }
+                                            maxLength={100}
+                                            required
+                                        />
+                                    </label>
+
+                                    <label className="community-create-field">
+                                        Description
+                                        <textarea
+                                            name="description"
+                                            value={communityForm.description}
+                                            onChange={event =>
+                                                setCommunityForm(current => ({
+                                                    ...current,
+                                                    description: event.target.value,
+                                                }))
+                                            }
+                                            maxLength={500}
+                                            rows={3}
+                                            required
+                                        />
+                                    </label>
+
+                                    <label className="community-create-field">
+                                        College
+                                        <input
+                                            name="college"
+                                            value={communityForm.college}
+                                            onChange={event =>
+                                                setCommunityForm(current => ({
+                                                    ...current,
+                                                    college: event.target.value,
+                                                }))
+                                            }
+                                            maxLength={150}
+                                            required
+                                        />
+                                    </label>
+
+                                    {createError && (
+                                        <div className="auth-error" role="alert">
+                                            {createError}
+                                        </div>
+                                    )}
+
+                                    <div className="community-modal-actions">
+                                        <button
+                                            type="button"
+                                            className="btn btn-ghost"
+                                            disabled={creating}
+                                            onClick={closeCreateModal}
+                                        >
+                                            Cancel
+                                        </button>
+                                        <button
+                                            type="submit"
+                                            className="btn btn-primary"
+                                            disabled={creating}
+                                        >
+                                            {creating
+                                                ? "Creating..."
+                                                : "Create community"}
+                                        </button>
+                                    </div>
+                                </form>
+                            </section>
+                        </div>
+                    )}
+                </>,
+                document.body
             )}
 
         </div>

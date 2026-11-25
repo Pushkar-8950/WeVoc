@@ -1,0 +1,40 @@
+
+
+
+
+
+.auth-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.auth-logo-icon {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--bg2);
+  color: var(--ink);
+  border: 1px solid var(--bg4);
+
+  border-radius: var(--r-lg);
+
+  box-shadow: 0 4px 14px rgba(0,0,0,0.28);
+}
+.auth-logo-icon .icon { width: 31px; height: 31px; }
+
+.auth-logo-wordmark {
+  font-family: var(--font-serif);
+  font-size: 27px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.auth-logo-wordmark span {
+  color: var(--ink2);
+}

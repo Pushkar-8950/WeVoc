@@ -1,3 +1,4 @@
+import "./RegisterPage.css";
 import { useState } from "react";
 import { useApp } from "../context/AppContext";
 import { EyeIcon, EyeOffIcon } from "../components/Icons";

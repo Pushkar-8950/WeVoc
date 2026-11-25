@@ -1,3 +1,4 @@
+import "./BookmarksPage.css";
 import { useEffect, useState } from "react";
 import PostCard from "../components/PostCard";
 import { getBookmarkedVoices } from "../api/bookmark.api";

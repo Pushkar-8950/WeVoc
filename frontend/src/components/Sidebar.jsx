@@ -1,3 +1,4 @@
+import "./Sidebar.css";
 import Avatar from "./Avatar";
 
 import {

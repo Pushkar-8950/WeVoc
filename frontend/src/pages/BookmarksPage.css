@@ -1,0 +1,22 @@
+
+.bookmarks-page-title {
+  transition: transform 0.42s ease, color 0.25s ease;
+}
+.bookmarks-page-title:hover {
+  color: var(--ink2);
+  transform: scaleX(1.12) scale(1.045);
+}
+
+
+.bookmarks-header {
+  border-bottom: none;
+}
+.saved-post-card {
+  transition: background 0.25s ease, transform 0.42s ease, box-shadow 0.42s ease, border-color 0.3s ease;
+}
+.saved-post-card:hover {
+  transform: scale(1.015);
+  border-color: var(--cri-a20);
+  box-shadow: 0 10px 30px var(--cri-a20);
+}
+.bk-header-count { font-size: 13px; color: var(--ink3); font-style: italic; }

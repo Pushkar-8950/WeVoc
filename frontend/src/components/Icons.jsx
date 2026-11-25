@@ -1,3 +1,4 @@
+import "./Icons.css";
 import React from 'react';
 
 function Icon({ className = '', ...props }) {

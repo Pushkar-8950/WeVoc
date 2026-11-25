@@ -53,10 +53,12 @@ export const initializeSocket = (
                             "http://127.0.0.1:5173",
                             "http://localhost:3000",
                         ].filter(Boolean);
-                        if (!origin || allowed.includes(origin) || allowed.includes("*")) {
+
+                        if (!origin || allowed.includes(origin)) {
                             return callback(null, true);
                         }
-                        return callback(null, true);
+
+                        return callback(new Error("Not allowed by CORS"));
                     },
                     credentials: true,
                 },
@@ -240,23 +242,34 @@ export const initializeSocket = (
 
 
 
+            
             socket.on(
                 "disconnect",
-                (reason) => {
+                async (reason) => {
 
                     console.log(
                         `🔴 Socket disconnected: ${socket.user.username}`,
                         reason
                     );
 
-                    io.emit(
-                        "user:offline",
-                        {
-                            userId,
-                        }
-                    );
+                    // Check whether this user has other active connections
+                    const remainingSockets = await io
+                        .in(`user:${userId}`)
+                        .fetchSockets();
+
+                    // Broadcast offline only when all connections are closed
+                    if (remainingSockets.length === 0) {
+
+                        io.emit(
+                            "user:offline",
+                            {
+                                userId,
+                            }
+                        );
+                    }
                 }
             );
+
         }
     );
 

@@ -1,3 +1,5 @@
+import "./ProfilePage.css";
+import "./UserProfilePage.css";
 import { useEffect, useState } from "react";
 
 import Avatar from "../components/Avatar";
@@ -1259,7 +1261,7 @@ export default function ProfilePage() {
 
 
 
-            <div className="tab-strip">
+            <div className="tab-strip profile-tabs">
 
 
 

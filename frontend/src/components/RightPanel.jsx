@@ -1,3 +1,4 @@
+import "./RightPanel.css";
 import { useEffect, useState } from "react";
 
 import Avatar from "./Avatar";

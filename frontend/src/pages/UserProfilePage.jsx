@@ -1,3 +1,4 @@
+import "./UserProfilePage.css";
 import { useEffect, useState } from "react";
 
 import Avatar from "../components/Avatar";

@@ -1,0 +1,8 @@
+
+.friends-page-title {
+  transition: transform 0.42s ease, color 0.25s ease;
+}
+.friends-page-title:hover {
+  color: var(--ink2);
+  transform: scaleX(1.12) scale(1.045);
+}

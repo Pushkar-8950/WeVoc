@@ -1,3 +1,4 @@
+import "./ComposeBox.css";
 import { useEffect, useRef, useState } from "react";
 
 import { publishVoice } from "../api/voice.api";

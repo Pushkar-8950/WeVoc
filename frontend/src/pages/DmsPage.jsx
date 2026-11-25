@@ -1,3 +1,4 @@
+import "./DmsPage.css";
 import {
     useEffect,
     useRef,

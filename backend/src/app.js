@@ -31,10 +31,11 @@ app.use(
     cors({
         origin: (origin, callback) => {
             // Allow requests with no origin (like mobile apps, curl, Postman)
-            if (!origin || allowedOrigins.includes(origin) || allowedOrigins.includes("*")) {
+            if (!origin || allowedOrigins.includes(origin)) {
                 return callback(null, true);
             }
-            return callback(null, true);
+            
+            return callback(new Error("Not allowed by CORS"));
         },
         credentials: true,
     })

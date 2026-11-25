@@ -1,3 +1,4 @@
+import "./AdminPage.css";
 import { useEffect, useState } from "react";
 import Avatar from "../components/Avatar";
 import AdminSidebar from "../components/AdminSidebar";

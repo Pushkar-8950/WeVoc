@@ -69,6 +69,9 @@ const getFeed = asyncHandler(async (req, res) => {
 });
 
 const getTrendingVoices = asyncHandler(async (req, res) => {
+    const page = Math.max(1, Number.parseInt(req.query.page, 10) || 1);
+    const limit = Math.min(50, Math.max(1, Number.parseInt(req.query.limit, 10) || 20));
+
     const trendingVoices = await Voice.aggregate([
         {
             $match:{
@@ -93,19 +96,48 @@ const getTrendingVoices = asyncHandler(async (req, res) => {
             }
         },
         {
+            $lookup: {
+                from: "likes",
+                localField: "_id",
+                foreignField: "voice",
+                as: "likes"
+            }
+        },
+        {
             $addFields:{
                 owner:{
                     $first:"$owner"
+                },
+                likesCount: {
+                    $size: "$likes"
+                },
+                isLiked: {
+                    $in: [req.user._id, "$likes.likedBy"]
+                },
+                engagementScore: {
+                    $add: [
+                        { $multiply: [{ $size: "$likes" }, 3] },
+                        { $ifNull: ["$views", 0] }
+                    ]
                 }
             }
         },
         {
-            $sort:{
-                views:-1
+            $project: {
+                likes: 0
             }
         },
         {
-            $limit:10
+            $sort: {
+                engagementScore: -1,
+                createdAt: -1
+            }
+        },
+        {
+            $skip: (page - 1) * limit
+        },
+        {
+            $limit: limit
         },
         {
             $project:{
@@ -114,8 +146,12 @@ const getTrendingVoices = asyncHandler(async (req, res) => {
                 voiceFile: 1,
                 duration: 1,
                 views: 1,
+                likesCount: 1,
+                isLiked: 1,
                 createdAt: 1,
-                owner: 1
+                owner: 1,
+                community: 1,
+                isAnonymous: 1
             }
         }
     ])

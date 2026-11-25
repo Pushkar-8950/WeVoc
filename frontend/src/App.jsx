@@ -1,3 +1,4 @@
+import "./App.css";
 import { AppProvider, useApp } from "./context/AppContext";
 import { useState } from "react";
 
